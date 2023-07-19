@@ -5,21 +5,34 @@ module.exports = {
     await queryInterface.createTable('Accounts', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING,
+        validate: {
+          notEmpty:true,
+        }
       },
       username: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          notEmpty:true,
+        }
       },
       phone_number: {
         type: Sequelize.STRING
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique:true,
+        validate: {
+          notEmpty:true,
+          isEmail: true,
+        }
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          notEmpty:true,
+        }
       },
       address: {
         type: Sequelize.STRING

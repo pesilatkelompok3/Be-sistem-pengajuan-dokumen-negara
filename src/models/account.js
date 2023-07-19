@@ -14,6 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Account.init({
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: Sequelize.STRING,
+      validate: {
+        notEmpty:true,
+      }
+    },
     username: DataTypes.STRING,
     phone_number: DataTypes.STRING,
     email: DataTypes.STRING,
