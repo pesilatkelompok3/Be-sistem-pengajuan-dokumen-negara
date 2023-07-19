@@ -5,12 +5,14 @@ module.exports = {
     await queryInterface.createTable('Submission', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       user_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
+      },
+      form_id: {
+        type: Sequelize.STRING
       },
       status: {
         type: Sequelize.STRING

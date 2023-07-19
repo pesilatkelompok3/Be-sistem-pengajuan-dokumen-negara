@@ -5,12 +5,11 @@ module.exports = {
     await queryInterface.createTable('Questions', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       form_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       title: {
         type: Sequelize.STRING
