@@ -11,7 +11,7 @@ module.exports = {
       const userId = `user-${nanoid(12)}`;
       const hashedPassword = await argon2.hash(req.body.password);
 
-      const user = await User.create({
+      const user = await Account.create({
         id: userId,
         user: req.body.username,
         password: hashedPassword,
