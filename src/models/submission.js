@@ -11,11 +11,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Submission.init(
-    {id: {
-      allowNull: false,
-      primaryKey: true,
-      type: DataTypes.STRING
-    },
+    {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.STRING,
+      },
       user_id: DataTypes.STRING,
       form_id: DataTypes.STRING,
       status: DataTypes.STRING,
