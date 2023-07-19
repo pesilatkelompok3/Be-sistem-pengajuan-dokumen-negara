@@ -10,10 +10,16 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Form.hasMany(models.Submission, { foreignKey: 'form_id'});
+      Form.hasMany(models.Question, { foreignKey: 'form_id'});
     }
   }
   Form.init({
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.STRING
+    },
     title: DataTypes.STRING,
     description: DataTypes.STRING
   }, {

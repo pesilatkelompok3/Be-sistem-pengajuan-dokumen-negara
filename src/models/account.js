@@ -10,31 +10,25 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Account.hasMany(models.Submission, { foreignKey: 'user_id'});
     }
   }
-  Account.init(
-    {
-      id: {
-        allowNull: false,
-        primaryKey: true,
-        type: DataTypes.STRING,
-        validate: {
-          notEmpty: true,
-        },
-      },
-      username: DataTypes.STRING,
-      phone_number: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      address: DataTypes.STRING,
-      kota: DataTypes.STRING,
-      role: DataTypes.INTEGER,
+  Account.init({
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.STRING
     },
-    {
-      sequelize,
-      modelName: "Account",
-    }
-  );
+    username: DataTypes.STRING,
+    phone_number: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+    address: DataTypes.STRING,
+    kota: DataTypes.STRING,
+    role: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'Account',
+  });
   return Account;
 };

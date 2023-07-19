@@ -1,26 +1,26 @@
-require("dotenv").config();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const argon2 = require("argon2");
+const { createToken } = require("../helpers/jwt.js");
 const { nanoid } = require("nanoid");
 const { Account } = require("../models");
-const config = require("../config/configRoles");
+
 
 module.exports = {
   signup: async (req, res) => {
     try {
-      const userId = `user-${nanoid(12)}`;
+      const adminId = `admin-${nanoid(12)}`;
       const hashedPassword = await argon2.hash(req.body.password);
 
       const user = await Account.create({
         id: userId,
-        user: req.body.username,
+        username: req.body.username,
         password: hashedPassword,
+        role: req.body.role,
       });
 
       res.status(201).send({
         status: "success",
         id: user.id,
-        message: "User registered successfully!",
+        message: "User as admin registered successfully!",
       });
     } catch (error) {
       res.status(500).send({
@@ -33,45 +33,41 @@ module.exports = {
 
   signin: async (req, res) => {
     try {
-      const user = await User.findOne({
+      const user = await Account.findOne({
         where: {
-          user: req.body.username,
+          username: req.body.username,
         },
       });
 
       if (!user) {
         return res.status(404).send({
           auth: false,
-          user: req.body.username,
+          username: req.body.username,
           accessToken: null,
           message: "Error",
           errors: "User Not Found.",
         });
       }
 
-      const passwordIsValid = await bcrypt.compare(
-        req.body.password,
-        user.password
+      const passwordIsValid = await argon2.verify(
+        user.password,
+        req.body.password
       );
       if (!passwordIsValid) {
         return res.status(401).send({
           auth: false,
-          user: req.body.username,
+          username: req.body.username,
           accessToken: null,
           message: "Error",
           errors: "Invalid Password!",
         });
       }
 
-      const token = `Bearer ${jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 86400, // 24h expired
-      })}`;
-
-      res.status(201).send({
-        status: "success",
+      const payload = {
         id: user.id,
-        username: req.body.username,
-        accessToken: token,
+      };
+      res.status(200).json({
+        access_token: createToken(payload),
       });
     } catch (error) {
       res.status(500).send({
@@ -86,22 +82,22 @@ module.exports = {
 
   update: async (req, res) => {
     try {
-      const user = await User.findByPk(req.params.id);
+      const user = await Account.findByPk(req.params.id);
       if (!user) {
         return res.status(404).send({
           status_response: "Bad Request",
           errors: "User Not Found",
         });
       }
-      const hashedPassword = await bcrypt.hash(req.body.password, 8);
+      const hashedPassword = await argon2.hash(req.body.password);
       await user.update({
-        user: req.body.username,
+        username: req.body.username,
         password: hashedPassword,
       });
 
       const status = {
         status: "success",
-        message: "The user data has been updated",
+        message: "Data has been updated",
       };
       return res.status(200).send(status);
     } catch (error) {
@@ -114,7 +110,7 @@ module.exports = {
 
   delete: async (req, res) => {
     try {
-      const user = await User.findByPk(req.params.id);
+      const user = await Account.findByPk(req.params.id);
       if (!user) {
         return res.status(404).send({
           status_response: "Bad Request",
