@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  SVGAnimateTransformElementubmission.init(
+  Submission.init(
     {
       user_id: DataTypes.INTEGER,
       status: DataTypes.STRING,

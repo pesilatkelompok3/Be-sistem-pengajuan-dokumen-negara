@@ -13,25 +13,28 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Account.init({
-    id: {
-      allowNull: false,
-      primaryKey: true,
-      type: Sequelize.STRING,
-      validate: {
-        notEmpty:true,
-      }
+  Account.init(
+    {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      username: DataTypes.STRING,
+      phone_number: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      address: DataTypes.STRING,
+      kota: DataTypes.STRING,
+      role: DataTypes.INTEGER,
     },
-    username: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    address: DataTypes.STRING,
-    kota: DataTypes.STRING,
-    role: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Account',
-  });
+    {
+      sequelize,
+      modelName: "Account",
+    }
+  );
   return Account;
 };

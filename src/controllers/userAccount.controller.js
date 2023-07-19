@@ -1,4 +1,5 @@
 const { nanoid } = require("nanoid");
+const  argon2  = require("argon2");
 const { Account } = require("../models");
 const { Op } = require("sequelize");
 
@@ -39,12 +40,14 @@ module.exports = {
     const role = 1;
 
     const isUsernameTaken = await Account.findOne({
+      attributes: ["username"],
       where: {
         username: username,
       },
     });
     if (isUsernameTaken) return res.status(400).json({ msg: "Username Ini Sudah Terdaftar" });
     const isEmailTaken = await Account.findOne({
+      attributes: ["email"],
       where: {
         email: email,
       },
