@@ -8,8 +8,21 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.STRING
       },
+      form_id: {
+        type: Sequelize.STRING,
+        references: {
+          model: 'Forms',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+      },
       question_id: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: {
+          model: 'Questions',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       input: {
         type: Sequelize.STRING
