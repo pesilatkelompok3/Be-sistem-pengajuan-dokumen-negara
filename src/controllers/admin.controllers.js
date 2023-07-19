@@ -1,5 +1,5 @@
 require("dotenv").config();
-const argon2 = require("argon2");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { nanoid } = require("nanoid");
 const { Account } = require("../models");

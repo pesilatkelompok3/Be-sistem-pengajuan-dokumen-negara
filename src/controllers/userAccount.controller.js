@@ -16,6 +16,23 @@ module.exports = {
     }
   },
 
+  signin: async (req, res) => {
+    const user = await Account.findOne({
+      where: {
+        [Op.or]: [{ email: req.body.email }, { username: req.body.username }],
+      },
+    });
+    if (!user) return res.status(404).json({ msg: "User Tidak Di Temukan" });
+    const match = await argon2.verify(user.password, req.body.password);
+    if (!match) return res.status(400).json({ msg: "Password Yang Anda Masukan Salah" });
+    const payload = {
+      id: user.id,
+    };
+    res.status(200).json({
+      access_token: createToken(payload),
+    });
+  },
+
   signup: async (req, res) => {
     const { username, name, phone_number, email, address, password, confPassword, kota } = req.body;
     const id = `user-${nanoid(12)}`;
@@ -52,23 +69,6 @@ module.exports = {
     } catch (error) {
       res.status(400).json({ msg: error.message });
     }
-  },
-
-  signin: async (req, res) => {
-    const user = await Account.findOne({
-      where: {
-        [Op.or]: [{ email: req.body.email }, { username: req.body.username }],
-      },
-    });
-    if (!user) return res.status(404).json({ msg: "User Tidak Di Temukan" });
-    const match = await argon2.verify(user.password, req.body.password);
-    if (!match) return res.status(400).json({ msg: "Password Yang Anda Masukan Salah" });
-    const payload = {
-      id: user.id,
-    };
-    res.status(200).json({
-      access_token: createToken(payload),
-    });
   },
 
   update: async (req, res) => {
