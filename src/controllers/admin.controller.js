@@ -1,11 +1,10 @@
 const argon2 = require("argon2");
 const { createToken } = require("../helpers/jwt.js");
 const { nanoid } = require("nanoid");
-const { Account } = require("../models");
-
+const { Account } = require("../models/index.js");
 
 module.exports = {
-  signup: async (req, res) => {
+  registerAdmin: async (req, res) => {
     try {
       const adminId = `admin-${nanoid(12)}`;
       const hashedPassword = await argon2.hash(req.body.password);
@@ -72,7 +71,7 @@ module.exports = {
     } catch (error) {
       res.status(500).send({
         status: false,
-        user_name: req.body.user_name,
+        username: req.body.username,
         accessToken: null,
         message: "Error",
         errors: error,
