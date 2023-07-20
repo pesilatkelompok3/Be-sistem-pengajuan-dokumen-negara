@@ -1,31 +1,21 @@
-const jwt = require("jsonwebtoken");
+const { verifyToken } = require("../helpers/jwt.js");
 const { Account } = require("../models");
 
 module.exports = {
   verifyToken(req, res, next) {
-    let tokenHeader = req.headers["x-access-token"];
+    const  access_token  = req.headers['x-access-token'];
 
-    let token = tokenHeader.split(" ")[0];
-
-    if (!token) {
+    if (!access_token) {
       return res.status(403).send({
         auth: false,
         message: "Error",
         errors: "No token provided",
       });
     }
-
-    jwt.verify(token, process.env.SECRET, (err, decoded) => {
-      if (err) {
-        return res.status(500).send({
-          auth: false,
-          message: "Error",
-          errors: err,
-        });
-      }
-      req.userId = decoded.id;
+    const payload = verifyToken(access_token);
+    console.log(payload);
+    req.userId = payload.id;
       next();
-    });
   },
 
   isAdmin(req, res, next) {
@@ -38,7 +28,7 @@ module.exports = {
           });
         }
 
-        if (user.role !== "admin") {
+        if (user.role !== "admin" && user.role !== "superAdmin") {
           return res.status(403).send({
             status: "fail",
             message: "Require Admin Role",

@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     form_id: DataTypes.STRING,
-    title: DataTypes.STRING,
+    title_field: DataTypes.STRING,
     type: DataTypes.STRING,
     required: DataTypes.STRING
   }, {
