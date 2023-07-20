@@ -14,6 +14,6 @@ userRouter.delete("/users", userAccount.delete);
 userRouter.post("/user/login", userAccount.signin);
 
 userRouter.get("/account", userAccount.getUser);
-userRouter.get("account/role", userAccount.filterByRole)
+userRouter.get("/account/role", userAccount.filterByRole)
 
 module.exports = userRouter;

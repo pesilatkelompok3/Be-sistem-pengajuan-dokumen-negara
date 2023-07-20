@@ -9,7 +9,7 @@ module.exports = {
         id: "superAdmin1",
         username: "super-admin-1",
         email: "admin@gmail.com",
-        password: await argon2.hash("123456", 10),
+        password: await argon2.hash("12345678"),
         role: "superAdmin",
       },
     ];

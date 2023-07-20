@@ -10,7 +10,7 @@ module.exports = {
       const hashedPassword = await argon2.hash(req.body.password);
 
       const user = await Account.create({
-        id: userId,
+        id: adminId,
         username: req.body.username,
         password: hashedPassword,
         role: req.body.role,
@@ -19,7 +19,7 @@ module.exports = {
       res.status(201).send({
         status: "success",
         id: user.id,
-        message: "User as admin registered successfully!",
+        message: "Account admin registered successfully!",
       });
     } catch (error) {
       res.status(500).send({
