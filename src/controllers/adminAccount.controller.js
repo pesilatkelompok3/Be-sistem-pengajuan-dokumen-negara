@@ -7,11 +7,10 @@ module.exports = {
   signup: async (req, res) => {
     const user = await Account.findOne({
       where: {
-        id: req.userId,
+        id: req.accountId,
       },
     });
-    console.log(user, "tset");
-    if (req.userId === "superAdmin1") {
+    if (req.accountId === "superAdmin1") {
       try {
         const adminId = `admin-${nanoid(12)}`;
         const { nip, name, email, password, confPassword, role } = req.body;

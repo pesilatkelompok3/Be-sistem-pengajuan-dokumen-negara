@@ -1,6 +1,7 @@
 const argon2 = require("argon2");
 const { createToken } = require("../helpers/jwt.js");
 const { nanoid } = require("nanoid");
+const { Op } = require("sequelize");
 const { Account } = require("../models/index.js");
 
 module.exports = {
@@ -8,7 +9,7 @@ module.exports = {
     if (req.role === "admin" || req.role === "SuperAdmin") {
       try {
         const response = await Account.findAll({
-          attributes: ["id", "username", "name", "phone_number", "email", "address", "kota"],
+          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
           where: {
             [Op.and]: [{ role: "user" }, { role: "admin" }],
           },
@@ -24,7 +25,7 @@ module.exports = {
     if (req.role === "admin" || req.role === "SuperAdmin") {
       try {
         const response = await Account.findAll({
-          attributes: ["id", "username", "name", "phone_number", "email", "address", "kota"],
+          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
           where: {
             role: "user",
           },
@@ -57,7 +58,7 @@ module.exports = {
     } else if (req.role === "user") {
       const user = await Account.findOne({
         where: {
-          id: req.userId,
+          id: req.accountId,
         },
       });
       if (!user) return res.status(404).json({ msg: "User Tidak Di Temukan" });
