@@ -6,21 +6,25 @@ const { createToken } = require("../helpers/jwt.js");
 
 module.exports = {
   signin: async (req, res) => {
-    const user = await Account.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
+    try {
+      const user = await Account.findOne({
+        where: {
+          email: req.body.email,
+        },
+      });
 
-    if (!user) return res.status(404).json({ msg: "User Tidak Di Temukan" });
-    const match = await argon2.verify(user.password, req.body.password);
-    if (!match) return res.status(400).json({ msg: "Password Yang Anda Masukan Salah" });
-    const payload = {
-      id: user.id,
-    };
-    res.status(200).json({
-      access_token: createToken(payload),
-    });
+      if (!user) return res.status(404).json({ msg: "User Tidak Di Temukan" });
+      const match = await argon2.verify(user.password, req.body.password);
+      if (!match) return res.status(400).json({ msg: "Password Yang Anda Masukan Salah" });
+      const payload = {
+        id: user.id,
+      };
+      res.status(200).json({
+        access_token: createToken(payload),
+      });
+    } catch (error) {
+      res.status(400).json({ msg: error.message });
+    }
   },
 
   signup: async (req, res) => {

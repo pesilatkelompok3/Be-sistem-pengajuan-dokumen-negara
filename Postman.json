@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "fdd68a99-3660-41f6-8081-6d720e414aa3",
+		"name": "Final Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24097162"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "User Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "cookyndi",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "name",
+											"value": "ndi",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "012345676890",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "ndii@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "dfgdfg",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "confPassword",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "kota",
+											"value": "bandung",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/users/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"users",
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "ndii@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "cookyndi",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": "12345678",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/user/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Admin Register",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InN1cGVyQWRtaW4xIiwiaWF0IjoxNjg5ODQ2NjIzfQ.B5aSwHeX7z4fIU0cm80Yy1ZxM9WXfa-AMi-edvuZiG8",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "access_token",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nip",
+											"value": "47484564574352",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "ndi",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "012345676890",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "email",
+											"value": "cookyndi@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "confPassword",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "admin",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/admin/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"admin",
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nip",
+											"value": "123457844754",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": "12345678",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/admin/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"admin",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -8,6 +8,7 @@ module.exports = {
       {
         id: "superAdmin1",
         nip: "123457844754",
+        name: "Super Admin",
         email: "admin@gmail.com",
         password: await argon2.hash("12345678"),
         role: "SuperAdmin",

@@ -5,73 +5,65 @@ const { Account } = require("../models/index.js");
 
 module.exports = {
   signup: async (req, res) => {
-    let user = {};
-    if (req.body.email) {
-      user = await Account.findOne({
-        where: {
-          email: req.body.email,
-        },
-      });
-    } else if (req.body.username) {
-      user = await Account.findOne({
-        where: {
-          username: req.body.username,
-        },
-      });
-    }
-    try {
-      const adminId = `admin-${nanoid(12)}`;
-      const hashedPassword = await argon2.hash(req.body.password);
+    const user = await Account.findOne({
+      where: {
+        id: req.userId,
+      },
+    });
+    console.log(user, "tset");
+    if (req.userId === "superAdmin1") {
+      try {
+        const adminId = `admin-${nanoid(12)}`;
+        const { nip, name, email, password, confPassword, role } = req.body;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-      const user = await Account.create({
-        id: adminId,
-        username: req.body.username,
-        password: hashedPassword,
-        role: req.body.role,
-      });
+        const isNipTaken = await Account.findOne({
+          attributes: ["nip"],
+          where: {
+            nip: nip,
+          },
+        });
+        if (isNipTaken) return res.status(400).json({ msg: "Nip Ini Sudah Terdaftar" });
 
-      res.status(201).send({
-        status: "success",
-        id: user.id,
-        message: "Account admin registered successfully!",
-      });
-    } catch (error) {
-      res.status(500).send({
-        auth: false,
-        message: "Error",
-        errors: error,
-      });
+        if (!emailRegex.test(email)) return res.status(400).json({ msg: "Email Tidak Sesuai" });
+        if (password !== confPassword)
+          return res.status(400).json({ msg: "Password Dan Confirm Password Tidak Sesuai" });
+        const hashedPassword = await argon2.hash(password);
+
+        await Account.create({
+          id: adminId,
+          nip: nip,
+          name: name,
+          email: email,
+          password: hashedPassword,
+          role: role,
+        });
+
+        res.status(201).json({ msg: "Akun Berhasil Dibuat" });
+      } catch (error) {
+        res.status(500).send({
+          auth: false,
+          message: "Error",
+          errors: error.message,
+        });
+      }
+    } else {
+      res.status(403).json({ msg: "Akses Ditolak" });
     }
   },
 
   signin: async (req, res) => {
     try {
+      const { nip, password } = req.body;
       const user = await Account.findOne({
         where: {
-          username: req.body.username,
+          nip: nip,
         },
       });
+      if (!user) return res.status(404).json({ msg: "User Tidak Di Temukan" });
 
-      if (!user) {
-        return res.status(404).send({
-          auth: false,
-          username: req.body.username,
-          accessToken: null,
-          message: "Error",
-          errors: "User Not Found.",
-        });
-      }
-
-      const passwordIsValid = await argon2.verify(user.password, req.body.password);
-      if (!passwordIsValid) {
-        return res.status(401).send({
-          auth: false,
-          username: req.body.username,
-          accessToken: null,
-          message: "Error",
-          errors: "Invalid Password!",
-        });
-      }
+      const passwordIsValid = await argon2.verify(user.password, password);
+      if (!passwordIsValid) return res.status(400).json({ msg: "Password Yang Anda Masukan Salah" });
 
       const payload = {
         id: user.id,
@@ -80,13 +72,7 @@ module.exports = {
         access_token: createToken(payload),
       });
     } catch (error) {
-      res.status(500).send({
-        status: false,
-        username: req.body.username,
-        accessToken: null,
-        message: "Error",
-        errors: error,
-      });
+      res.status(400).json({ msg: error.message });
     }
   },
 };

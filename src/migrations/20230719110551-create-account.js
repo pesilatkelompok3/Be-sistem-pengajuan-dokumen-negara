@@ -18,6 +18,9 @@ module.exports = {
           notEmpty: true,
         },
       },
+      name: {
+        type: Sequelize.STRING,
+      },
       phone_number: {
         type: Sequelize.STRING,
       },

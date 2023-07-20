@@ -1,19 +1,20 @@
 const express = require("express");
-// const verifyUser = require("../middleware/verifyUser.js");
-// const admin = require("../controllers/admin.controller.js");
+const verifyUser = require("../middleware/verifyUser.js");
+const { authentication, authorization } = require("../middleware/auth.js");
+const adminAccount = require("../controllers/adminAccount.controller.js");
 const userAccount = require("../controllers/userAccount.controller.js");
-const userRouter = express.Router();
+const accountRouter = express.Router();
 
-// userRouter.post("/admin/registration", verifyUser.isSuperAdmin, admin.registerAdmin);
-// userRouter.post("/admin/login", admin.signin);
+accountRouter.post("/admin/registration", authentication, adminAccount.signup);
+accountRouter.post("/admin/login", adminAccount.signin);
 
-userRouter.post("/users", userAccount.signup);
-userRouter.patch("/users", userAccount.update);
-userRouter.delete("/users", userAccount.delete);
+accountRouter.post("/users/registration", userAccount.signup);
+accountRouter.post("/user/login", userAccount.signin);
 
-userRouter.post("/user/login", userAccount.signin);
+accountRouter.patch("/users", userAccount.update);
+accountRouter.delete("/users", userAccount.delete);
 
-// userRouter.get("/account", userAccount.getUser);
-// userRouter.get("/account/role", userAccount.filterByRole)
+// accountRouter.get("/account", userAccount.getUser);
+// accountRouter.get("/account/role", userAccount.filterByRole)
 
-module.exports = userRouter;
+module.exports = accountRouter;
