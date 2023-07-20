@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const userRouter = require("./src/routers/account.router.js");
+const accountRouter = require("./routers/account.router.js");
 dotenv.config();
 
 const app = express();
@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 });
 
 
-app.use(userRouter);
+app.use(accountRouter);
 
 app.listen(port, () => {
   console.log(`server running perfectly at port ${port}`);

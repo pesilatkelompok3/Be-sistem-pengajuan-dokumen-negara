@@ -47,7 +47,11 @@ module.exports = {
   },
 
   isSuperAdmin(req, res, next) {
-    Account.findByPk(req.userId)
+    Account.findOne({
+      where: {
+        id: req.userId,
+      },
+    })
       .then((user) => {
         if (!user) {
           return res.status(403).send({
