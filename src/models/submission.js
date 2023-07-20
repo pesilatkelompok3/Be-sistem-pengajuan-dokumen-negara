@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Submission.belongsTo(models.Account, { foreignKey: 'user_id' })
       Submission.belongsTo(models.Form, { foreignKey: 'form_id' });
-      // Submission.hasmany(models.Answer, { foreignKey: "submission_id" });
+      Submission.hasMany(models.Answer, { foreignKey: "submission_id" });
     }
   }
   Submission.init(
