@@ -13,22 +13,26 @@ module.exports = (sequelize, DataTypes) => {
       Account.hasMany(models.Submission, { foreignKey: 'user_id'});
     }
   }
-  Account.init({
-    id: {
-      allowNull: false,
-      primaryKey: true,
-      type: DataTypes.STRING
+  Account.init(
+    {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.STRING,
+      },
+      nip: DataTypes.STRING,
+      phone_number: DataTypes.STRING,
+      email: DataTypes.STRING,
+      birth_date: DataTypes.STRING,
+      gender: DataTypes.STRING,
+      password: DataTypes.STRING,
+      address: DataTypes.STRING,
+      role: DataTypes.STRING,
     },
-    username: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    address: DataTypes.STRING,
-    kota: DataTypes.STRING,
-    role: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Account',
-  });
+    {
+      sequelize,
+      modelName: "Account",
+    }
+  );
   return Account;
 };

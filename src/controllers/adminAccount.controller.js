@@ -4,7 +4,21 @@ const { nanoid } = require("nanoid");
 const { Account } = require("../models/index.js");
 
 module.exports = {
-  registerAdmin: async (req, res) => {
+  signup: async (req, res) => {
+    let user = {};
+    if (req.body.email) {
+      user = await Account.findOne({
+        where: {
+          email: req.body.email,
+        },
+      });
+    } else if (req.body.username) {
+      user = await Account.findOne({
+        where: {
+          username: req.body.username,
+        },
+      });
+    }
     try {
       const adminId = `admin-${nanoid(12)}`;
       const hashedPassword = await argon2.hash(req.body.password);
@@ -48,10 +62,7 @@ module.exports = {
         });
       }
 
-      const passwordIsValid = await argon2.verify(
-        user.password,
-        req.body.password
-      );
+      const passwordIsValid = await argon2.verify(user.password, req.body.password);
       if (!passwordIsValid) {
         return res.status(401).send({
           auth: false,
@@ -74,57 +85,6 @@ module.exports = {
         username: req.body.username,
         accessToken: null,
         message: "Error",
-        errors: error,
-      });
-    }
-  },
-
-  update: async (req, res) => {
-    try {
-      const user = await Account.findByPk(req.params.id);
-      if (!user) {
-        return res.status(404).send({
-          status_response: "Bad Request",
-          errors: "User Not Found",
-        });
-      }
-      const hashedPassword = await argon2.hash(req.body.password);
-      await user.update({
-        username: req.body.username,
-        password: hashedPassword,
-      });
-
-      const status = {
-        status: "success",
-        message: "Data has been updated",
-      };
-      return res.status(200).send(status);
-    } catch (error) {
-      res.status(400).send({
-        status_response: "Bad Request",
-        errors: error,
-      });
-    }
-  },
-
-  delete: async (req, res) => {
-    try {
-      const user = await Account.findByPk(req.params.id);
-      if (!user) {
-        return res.status(404).send({
-          status_response: "Bad Request",
-          errors: "User Not Found",
-        });
-      }
-      await user.destroy();
-      const status = {
-        status: "success",
-        message: "User account has been deleted",
-      };
-      return res.status(200).send(status);
-    } catch (error) {
-      res.status(400).send({
-        status_response: "Bad Request",
         errors: error,
       });
     }
