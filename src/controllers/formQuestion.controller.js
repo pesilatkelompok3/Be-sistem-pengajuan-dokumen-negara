@@ -94,7 +94,6 @@ module.exports = {
         {
           title: req.body.title,
           type: req.body.type,
-          required: req.body.required,
         },
         {
           where: {
@@ -125,7 +124,7 @@ module.exports = {
         {
           title_field: req.body.title_field,
           type: req.body.type,
-        required: req.body.required,
+          required: req.body.required,
         },
         {
           where: {
