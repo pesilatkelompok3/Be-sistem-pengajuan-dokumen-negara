@@ -1,12 +1,13 @@
 "use strict";
 const argon2 = require("argon2");
+const { nanoid } = require("nanoid");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     const isSuperAdmin = [
       {
-        id: "superAdmin1",
+        id: `SuperAdmin-${nanoid(12)}`,
         nip: "123457844754",
         name: "Super Admin",
         email: "admin@gmail.com",

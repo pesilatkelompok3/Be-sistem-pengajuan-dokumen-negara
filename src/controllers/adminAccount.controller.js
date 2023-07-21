@@ -5,12 +5,12 @@ const { Account } = require("../models/index.js");
 
 module.exports = {
   signup: async (req, res) => {
-    const user = await Account.findOne({
+    const account = await Account.findOne({
       where: {
         id: req.accountId,
       },
     });
-    if (req.accountId === "superAdmin1") {
+    if (account.role === "SuperAdmin") {
       try {
         const adminId = `admin-${nanoid(12)}`;
         const { nip, name, email, password, confPassword, role } = req.body;
