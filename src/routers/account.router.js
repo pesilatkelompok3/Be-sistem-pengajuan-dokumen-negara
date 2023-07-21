@@ -1,6 +1,6 @@
 const express = require("express");
 const verifyUser = require("../middleware/verifyUser.js");
-const form = require("../controllers/form.controller.js");
+const form = require("../controllers/formAndQuestion.controller.js");
 const { authentication, authorization } = require("../middleware/auth.js");
 const adminAccount = require("../controllers/adminAccount.controller.js");
 
