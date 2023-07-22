@@ -5,8 +5,13 @@ const { nanoid } = require("nanoid");
 module.exports = {
   getForms: async (req, res) => {
     try {
-      const response = await Form.findAll();
-      res.json(response);
+      const allForm = await Form.findAll();
+      res.status(201).send({
+        status: "success",
+        data: {
+          allForm,
+        },
+      });
     } catch (error) {
       res.status(500).send({
         auth: false,
@@ -15,14 +20,25 @@ module.exports = {
       });
     }
   },
-  getFormById: async (req, res) => {
+  getFormQuestionById: async (req, res) => {
     try {
-      const response = await Form.findOne({
+      const form = await Form.findOne({
         where: {
           id: req.params.id,
         },
       });
-      res.json(response);
+      const question = await Question.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      res.status(201).send({
+        status: "success",
+        data: {
+          form,
+          question,
+        },
+      });
     } catch (error) {
       res.status(500).send({
         auth: false,

@@ -1,11 +1,11 @@
 const express = require("express");
 const verifyUser = require("../middleware/verifyUser.js");
-const form = require("../controllers/form.controller.js");
+const form = require("../controllers/formQuestion.controller.js");
 
 const formRouter = express.Router();
 
 formRouter.get("/admin/form", verifyUser.verifyToken, verifyUser.isAdmin, form.getForms);
-formRouter.get("/admin/form/:id", verifyUser.verifyToken, verifyUser.isAdmin, form.getFormById);
+formRouter.get("/admin/form/:id", verifyUser.verifyToken, verifyUser.isAdmin, form.getFormQuestionById);
 formRouter.post("/admin/form/create", verifyUser.verifyToken, verifyUser.isAdmin, form.createForm);
 formRouter.post("/admin/form/create/:id", verifyUser.verifyToken, verifyUser.isAdmin, form.createQuestion);
 formRouter.patch("/admin/form/:id", verifyUser.verifyToken, verifyUser.isAdmin, form.updateForm);
