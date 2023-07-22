@@ -94,7 +94,6 @@ module.exports = {
         {
           title: req.body.title,
           type: req.body.type,
-          required: req.body.required,
         },
         {
           where: {
@@ -124,7 +123,8 @@ module.exports = {
       await Question.update(
         {
           title_field: req.body.title_field,
-          description: req.body.description,
+          type: req.body.type,
+          required: req.body.required,
         },
         {
           where: {
