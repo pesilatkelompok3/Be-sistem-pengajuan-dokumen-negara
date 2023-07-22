@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const cookieParser = require('cookie-parser');
 const accountRouter = require("./routers/account.router.js");
 const formRouter = require("./routers/formQuestion.router.js");
 const submissionRouter = require("./routers/answerSubmission.router.js")
