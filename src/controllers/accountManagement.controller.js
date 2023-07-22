@@ -30,6 +30,8 @@ module.exports = {
       } catch (error) {
         res.status(500).json({ msg: error.message });
       }
+    } else if (req.role === "user") {
+      res.status(403).json({ msg: "Akses Ditolak" });
     }
   },
 
