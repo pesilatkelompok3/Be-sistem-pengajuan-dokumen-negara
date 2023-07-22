@@ -2,10 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const accountRouter = require("./routers/account.router.js");
-const formRouter = require("./routers/form.router.js")
+const formRouter = require("./routers/form.router.js");
+const cookieParser = require("cookie-parser");
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
 const port = 5000;
 
 app.use(express.json());
@@ -21,18 +23,17 @@ app.use(
   })
 );
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header("Access-Control-Allow-Origin", "*");
   res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-access-token',
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, x-access-token"
   );
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
     return res.status(200).json({});
   }
   next();
 });
-
 
 app.use(accountRouter);
 app.use(formRouter);

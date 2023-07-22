@@ -1,22 +1,27 @@
 const { Account } = require("../models/index.js");
-const { verifyToken } = require("../helpers/jwt.js");
+const { verifyAccessToken } = require("../helpers/jwt.js");
 
 const authentication = async (req, res, next) => {
   const { access_token } = req.headers;
   if (!access_token) {
     return res.status(401).json({ msg: "Mohon Untuk Login Terlebih Dahulu!!" });
   }
-  const payload = verifyToken(access_token);
-  const result = await Account.findOne({
-    where: {
-      id: payload.id,
-    },
-  });
-  if (!result) return res.status(404).json({ msg: "User Tidak Di Temukan .." });
-  req.accountId = result.id;
-  req.name = result.name;
-  req.role = result.role;
-  next();
+
+  try {
+    const payload = await verifyAccessToken(access_token);
+    const result = await Account.findOne({
+      where: {
+        id: payload.id,
+      },
+    });
+    if (!result) return res.status(404).json({ msg: "User Tidak Di Temukan .." });
+    req.accountId = result.id;
+    req.name = result.name;
+    req.role = result.role;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: error.message || "Invalid token" });
+  }
 };
 
 const authorization = async (req, res, next) => {
@@ -24,7 +29,7 @@ const authorization = async (req, res, next) => {
   if (!access_token) {
     return res.status(401).json({ msg: "Mohon Untuk Login Terlebih Dahulu!!" });
   }
-  const payload = verifyToken(access_token);
+  const payload = verifyAccessToken(access_token);
   const result = await Account.findOne({
     where: {
       id: payload.id,

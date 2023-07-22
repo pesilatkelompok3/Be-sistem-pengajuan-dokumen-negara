@@ -1,28 +1,24 @@
 const argon2 = require("argon2");
-const { createToken } = require("../helpers/jwt.js");
-const { nanoid } = require("nanoid");
+// const { createAccessToken } = require("../helpers/jwt.js");
+// const { nanoid } = require("nanoid");
 const { Op } = require("sequelize");
 const { Account } = require("../models/index.js");
 
 module.exports = {
-  getUser: async (req, res) => {
-    if (req.role === "admin" || req.role === "SuperAdmin") {
+  getAllAccount: async (req, res) => {
+    if (req.role === "SuperAdmin") {
       try {
         const response = await Account.findAll({
           attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
           where: {
-            [Op.and]: [{ role: "user" }, { role: "admin" }],
+            [Op.or]: [{ role: "user" }, { role: "admin" }],
           },
         });
         res.status(200).json(response);
       } catch (error) {
         res.status(500).json({ msg: error.message });
       }
-    }
-  },
-
-  filterByRole: async (req, res) => {
-    if (req.role === "admin" || req.role === "SuperAdmin") {
+    } else if (req.role === "admin") {
       try {
         const response = await Account.findAll({
           attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
@@ -37,165 +33,141 @@ module.exports = {
     }
   },
 
-  delete: async (req, res) => {
-    if (req.role === "admin" || req.role === "SuperAdmin") {
-      const user = await Account.findOne({
+  getAccountById: async (req, res) => {
+    if (req.role === "SuperAdmin" || req.role === "admin") {
+      try {
+        const response = await Account.findOne({
+          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
+          where: {
+            id: req.params.id,
+          },
+        });
+        res.status(200).json(response);
+      } catch (error) {
+        res.status(500).json({ msg: error.message });
+      }
+    } else if (req.role === "user") {
+      try {
+        const response = await Account.findOne({
+          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
+          where: {
+            id: req.accountId,
+          },
+        });
+        res.status(200).json(response);
+      } catch (error) {
+        res.status(500).json({ msg: error.message });
+      }
+    }
+  },
+
+  updateAccount: async (req, res) => {
+    let account;
+    if (req.role === "SuperAdmin" || req.role === "admin") {
+      account = await Account.findOne({
         where: {
           id: req.body.id,
         },
       });
-      if (!user) return res.status(404).json({ msg: "User Tidak Di Temukan" });
-      try {
-        await Account.destroy({
-          where: {
-            id: user.id,
-          },
-        });
-        res.status(200).json({ msg: "User Berhasil Di hapus" });
-      } catch (error) {
-        res.status(400).json({ msg: error.message });
-      }
     } else if (req.role === "user") {
-      const user = await Account.findOne({
+      account = await Account.findOne({
         where: {
           id: req.accountId,
         },
       });
-      if (!user) return res.status(404).json({ msg: "User Tidak Di Temukan" });
+    }
+
+    if (account.role === "SuperAdmin") {
+      if (req.role === "admin" || req.role === "user") {
+        res.status(403).json({ msg: "Akses Ditolak" });
+      }
+    }
+
+    const { name, phone_number, birth_date, gender, address, password, confPassword } = req.body;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    let email = req.body.email;
+    if (password === "" || password === null) {
+      email = account.email;
+    } else {
+      if (!emailRegex.test(email)) return res.status(400).json({ msg: "Email Tidak Sesuai" });
+    }
+
+    const isEmailTaken = await Account.findOne({
+      where: {
+        email: email,
+      },
+    });
+    if (account.email !== email) {
+      if (isEmailTaken) return res.status(400).json({ msg: "Email Ini Sudah Terdaftar" });
+    }
+
+    let hashPassword;
+    if (password !== confPassword) return res.status(400).json({ msg: "Password Dan Confirm Password Tidak Sesuai" });
+    if (password === "" || password === null) {
+      hashPassword = account.password;
+    } else {
+      hashPassword = await argon2.hash(password);
+    }
+
+    try {
+      await Account.update(
+        {
+          name: name,
+          phone_number: phone_number,
+          email: email,
+          birth_date: birth_date,
+          gender: gender,
+          password: hashPassword,
+          address: address,
+        },
+        {
+          where: {
+            id: account.id,
+          },
+        }
+      );
+      res.status(200).json({ msg: "account Berhasil Di Perbarui" });
+    } catch (error) {
+      res.status(400).json({ msg: error.message });
+    }
+  },
+
+  deleteAccount: async (req, res) => {
+    if (req.role === "admin" || req.role === "SuperAdmin") {
+      const account = await Account.findOne({
+        where: {
+          id: req.body.id,
+        },
+      });
+      if (!account) return res.status(404).json({ msg: "account Tidak Di Temukan" });
       try {
         await Account.destroy({
           where: {
-            id: user.id,
+            id: account.id,
           },
         });
-        res.status(200).json({ msg: "User Berhasil Di hapus" });
+        res.status(200).json({ msg: "account Berhasil Di hapus" });
       } catch (error) {
         res.status(400).json({ msg: error.message });
       }
-    }
-  },
-
-  registerAdmin: async (req, res) => {
-    try {
-      const adminId = `admin-${nanoid(12)}`;
-      const hashedPassword = await argon2.hash(req.body.password);
-
-      const user = await Account.create({
-        id: adminId,
-        username: req.body.username,
-        password: hashedPassword,
-        role: req.body.role,
-      });
-
-      res.status(201).send({
-        status: "success",
-        id: user.id,
-        message: "Account admin registered successfully!",
-      });
-    } catch (error) {
-      res.status(500).send({
-        auth: false,
-        message: "Error",
-        errors: error,
-      });
-    }
-  },
-
-  signin: async (req, res) => {
-    try {
-      const user = await Account.findOne({
+    } else if (req.role === "user") {
+      const account = await Account.findOne({
         where: {
-          username: req.body.username,
+          id: req.accountId,
         },
       });
-
-      if (!user) {
-        return res.status(404).send({
-          auth: false,
-          username: req.body.username,
-          accessToken: null,
-          message: "Error",
-          errors: "User Not Found.",
+      if (!account) return res.status(404).json({ msg: "account Tidak Di Temukan" });
+      try {
+        await Account.destroy({
+          where: {
+            id: account.id,
+          },
         });
+        res.status(200).json({ msg: "account Berhasil Di hapus" });
+      } catch (error) {
+        res.status(400).json({ msg: error.message });
       }
-
-      const passwordIsValid = await argon2.verify(user.password, req.body.password);
-      if (!passwordIsValid) {
-        return res.status(401).send({
-          auth: false,
-          username: req.body.username,
-          accessToken: null,
-          message: "Error",
-          errors: "Invalid Password!",
-        });
-      }
-
-      const payload = {
-        id: user.id,
-      };
-      res.status(200).json({
-        status: "success",
-        access_token: createToken(payload),
-      });
-    } catch (error) {
-      res.status(500).send({
-        status: false,
-        username: req.body.username,
-        accessToken: null,
-        message: "Error",
-        errors: error,
-      });
-    }
-  },
-
-  update: async (req, res) => {
-    try {
-      const user = await Account.findByPk(req.params.id);
-      if (!user) {
-        return res.status(404).send({
-          status_response: "Bad Request",
-          errors: "User Not Found",
-        });
-      }
-      const hashedPassword = await argon2.hash(req.body.password);
-      await user.update({
-        username: req.body.username,
-        password: hashedPassword,
-      });
-
-      const status = {
-        status: "success",
-        message: "Data has been updated",
-      };
-      return res.status(200).send(status);
-    } catch (error) {
-      res.status(400).send({
-        status_response: "Bad Request",
-        errors: error,
-      });
-    }
-  },
-
-  delete: async (req, res) => {
-    try {
-      const user = await Account.findByPk(req.params.id);
-      if (!user) {
-        return res.status(404).send({
-          status_response: "Bad Request",
-          errors: "User Not Found",
-        });
-      }
-      await user.destroy();
-      const status = {
-        status: "success",
-        message: "User account has been deleted",
-      };
-      return res.status(200).send(status);
-    } catch (error) {
-      res.status(400).send({
-        status_response: "Bad Request",
-        errors: error,
-      });
     }
   },
 };
