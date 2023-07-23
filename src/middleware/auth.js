@@ -27,6 +27,26 @@ const authentication = async (req, res, next) => {
   }
 };
 
+const authorization = async (req, res, next) => {
+  const { access_token } = req.headers;
+  if (!access_token) {
+    return res.status(401).json({ msg: "Mohon Untuk Login Terlebih Dahulu!!" });
+  }
+  const payload = verifyAccessToken(access_token);
+  const result = await Account.findOne({
+    where: {
+      id: payload.id,
+    },
+  });
+  if (!result) return res.status(404).json({ msg: "User Tidak Di Temukan ..." });
+  if (result.id == payload.id) {
+    next();
+  } else {
+    return res.status(401).json({ msg: "Unauthorized" });
+  }
+};
+
 module.exports = {
   authentication,
+  authorization,
 };
