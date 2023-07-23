@@ -136,16 +136,15 @@ module.exports = {
     if (!refreshToken) return res.sendStatus(204);
     const account = await Account.findOne({
       where: {
-        refresh_token: refreshToken,
+        id: req.accountId,
       },
     });
-    if (!account) return res.sendStatus(204);
-    const adminId = account.id;
+    if (account.refresh_token !== refreshToken) return res.sendStatus(204);
     await Account.update(
       { refresh_token: null },
       {
         where: {
-          id: adminId,
+          id: account.id,
         },
       }
     );
