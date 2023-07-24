@@ -51,6 +51,8 @@ module.exports = {
       res.cookie("refresh_token", refreshToken, {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
+        SameSite: Strict,
+        Path: "/app",
       });
       res.status(200).json({ msg: accessToken });
     } catch (error) {
