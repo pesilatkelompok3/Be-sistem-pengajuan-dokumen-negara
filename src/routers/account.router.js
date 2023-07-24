@@ -12,6 +12,7 @@ accountRouter.delete("/logout", authentication, authAccount.logout);
 
 accountRouter.get("/account", authentication, accountManagement.getAllAccount);
 accountRouter.get("/account/:id", authentication, accountManagement.getAccountById);
+accountRouter.get("/me", authentication, accountManagement.getDetailAccount);
 accountRouter.patch("/account", authentication, accountManagement.updateAccount);
 accountRouter.delete("/account", authentication, accountManagement.deleteAccount);
 

@@ -52,7 +52,7 @@ module.exports = {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
-      res.status(200).json({ msg: `Login Success : ${accessToken}` });
+      res.status(200).json({ msg: accessToken });
     } catch (error) {
       res.status(400).json({ msg: error.message });
     }

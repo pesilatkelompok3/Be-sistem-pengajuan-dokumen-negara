@@ -3,13 +3,14 @@ const argon2 = require("argon2");
 // const { nanoid } = require("nanoid");
 const { Op } = require("sequelize");
 const { Account } = require("../models/index.js");
+const { updateAccount } = require("../helpers/UpdateAccount.js");
 
 module.exports = {
   getAllAccount: async (req, res) => {
     if (req.role === "SuperAdmin") {
       try {
         const response = await Account.findAll({
-          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
+          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", , "role", "address"],
           where: {
             [Op.or]: [{ role: "user" }, { role: "admin" }],
           },
@@ -39,27 +40,39 @@ module.exports = {
     if (req.role === "SuperAdmin" || req.role === "admin") {
       try {
         const response = await Account.findOne({
-          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
+          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "role", "address"],
           where: {
             id: req.params.id,
           },
         });
-        res.status(200).json(response);
+        if (req.role === "admin") {
+          if (response.role === "SuperAdmin" || response.role === "admin") {
+            res.status(403).json({ msg: "Akses Ditolak" });
+          } else {
+            res.status(200).json(response);
+          }
+        } else {
+          res.status(200).json(response);
+        }
       } catch (error) {
         res.status(500).json({ msg: error.message });
       }
-    } else if (req.role === "user") {
-      try {
-        const response = await Account.findOne({
-          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
-          where: {
-            id: req.accountId,
-          },
-        });
-        res.status(200).json(response);
-      } catch (error) {
-        res.status(500).json({ msg: error.message });
-      }
+    } else {
+      res.status(403).json({ msg: "Akses Ditolak" });
+    }
+  },
+
+  getDetailAccount: async (req, res) => {
+    try {
+      const response = await Account.findOne({
+        attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
+        where: {
+          id: req.accountId,
+        },
+      });
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json({ msg: error.message });
     }
   },
 
@@ -77,12 +90,6 @@ module.exports = {
           id: req.accountId,
         },
       });
-    }
-
-    if (account.role === "SuperAdmin") {
-      if (req.role === "admin" || req.role === "user") {
-        res.status(403).json({ msg: "Akses Ditolak" });
-      }
     }
 
     const { name, phone_number, birth_date, gender, address, password, confPassword } = req.body;
@@ -112,26 +119,20 @@ module.exports = {
       hashPassword = await argon2.hash(password);
     }
 
-    try {
-      await Account.update(
-        {
-          name: name,
-          phone_number: phone_number,
-          email: email,
-          birth_date: birth_date,
-          gender: gender,
-          password: hashPassword,
-          address: address,
-        },
-        {
-          where: {
-            id: account.id,
-          },
-        }
-      );
-      res.status(200).json({ msg: "account Berhasil Di Perbarui" });
-    } catch (error) {
-      res.status(400).json({ msg: error.message });
+    if (account.role === "SuperAdmin") {
+      if (req.role === "admin" || req.role === "user") {
+        res.status(403).json({ msg: "Akses Ditolak" });
+      } else {
+        updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
+      }
+    } else if (account.role === "admin") {
+      if (req.role === "admin" || req.role === "user") {
+        res.status(403).json({ msg: "Akses Ditolak" });
+      } else {
+        updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
+      }
+    } else {
+      updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
     }
   },
 
