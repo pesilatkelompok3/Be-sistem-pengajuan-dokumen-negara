@@ -263,7 +263,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMTY2MTI4LCJleHAiOjE2OTAxNjY0Mjh9.6ntxsMLHrfOf16QweiWHNnb9e58KxjFZRbBNqeDzuWY",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluLTZxZVZKaHlNYzZSNCIsImlhdCI6MTY5MDE4NzM2OCwiZXhwIjoxNjkwMTg3NjY4fQ.T8EdyyoRHQZlLJhpH8Rjzb7abeA1jNIeo_Ajhw1-i0Y",
 											"type": "string"
 										}
 									]
@@ -352,9 +352,43 @@
 						},
 						{
 							"name": "Get Account By Role",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMTkzNjI3LCJleHAiOjE2OTAxOTM5Mjd9.fDINsg5XG4Io4g7bREhLFFXOs4aNgLChioU564sPv2k",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
-								"header": []
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "role",
+											"value": "user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"role"
+									]
+								}
 							},
 							"response": []
 						},
