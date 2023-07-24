@@ -50,7 +50,7 @@ module.exports = {
 
       res.cookie("refresh_token", refreshToken, {
         maxAge: 24 * 60 * 60 * 1000,
-        httpOnly: true,
+        httpOnly: secure,
         SameSite: Strict,
         Path: "/app",
       });
