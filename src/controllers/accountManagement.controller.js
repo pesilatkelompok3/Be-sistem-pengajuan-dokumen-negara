@@ -60,6 +60,36 @@ module.exports = {
     }
   },
 
+  getAccountByRole: async (req, res) => {
+    if (req.role === "SuperAdmin") {
+      try {
+        const response = await Account.findAll({
+          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "role", "address"],
+          where: {
+            role: req.body.role,
+          },
+        });
+        res.status(200).json(response);
+      } catch (error) {
+        res.status(500).json({ msg: error.message });
+      }
+    } else if (req.role === "admin") {
+      try {
+        const response = await Account.findAll({
+          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "role", "address"],
+          where: {
+            role: "user",
+          },
+        });
+        res.status(200).json(response);
+      } catch (error) {
+        res.status(500).json({ msg: error.message });
+      }
+    } else {
+      res.status(403).json({ msg: "Akses Ditolak" });
+    }
+  },
+
   getDetailAccount: async (req, res) => {
     try {
       const response = await Account.findOne({
