@@ -1,6 +1,4 @@
 const argon2 = require("argon2");
-// const { createAccessToken } = require("../helpers/jwt.js");
-// const { nanoid } = require("nanoid");
 const { Op } = require("sequelize");
 const { Account } = require("../models/index.js");
 const { updateAccount } = require("../helpers/UpdateAccount.js");

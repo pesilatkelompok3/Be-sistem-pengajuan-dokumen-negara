@@ -3,8 +3,8 @@ const { verifyAccessToken } = require("../helpers/jwt.js");
 
 const authentication = async (req, res, next) => {
   const access_token = req.headers["authorization"];
-  console.log(access_token);
   const token = access_token && access_token.split(" ")[1];
+  console.log("test",token);
 
   if (!token) {
     return res.status(401).json({ msg: "Mohon Untuk Login Terlebih Dahulu!!" });
