@@ -77,13 +77,13 @@ module.exports = {
       const submission = await Submission.create({
         id: submissionId,
         user_id: req.userId,
-        form_id: req.params.formId,
+        form_id: req.params.id,
         status: statusInput,
       });
 
       const form = await Form.findOne({
         where: {
-          id: req.params.formId,
+          id: req.params.id,
         },
       });
 
@@ -301,6 +301,21 @@ module.exports = {
   },
 
   upadateAnswerFromSumbmissionById: async (req, res) => {
+    if (req.role !== "SuperAdmin" && req.role !== "admin") {
+      const userId = req.userId;
+      const submissionOwner = await Submission.findOne({
+        where: {
+          id: req.params.id,
+          user_id: userId,
+        },
+      });
+      if (!submissionOwner) {
+        return res.status(403).send({
+          auth: false,
+          message: "Forbidden",
+        });
+      }
+    }
     const existingAnswer = await Answer.findOne({
       where: {
         id: req.params.id,
@@ -366,6 +381,21 @@ module.exports = {
   },
 
   deleteSubmission: async (req, res) => {
+    if (req.role !== "SuperAdmin" && req.role !== "admin") {
+      const userId = req.userId;
+      const submissionOwner = await Submission.findOne({
+        where: {
+          id: req.params.id,
+          user_id: userId,
+        },
+      });
+      if (!submissionOwner) {
+        return res.status(403).send({
+          auth: false,
+          message: "Forbidden",
+        });
+      }
+    }
     const submission = await Submission.findOne({
       where: {
         id: req.params.id,
