@@ -8,9 +8,7 @@ module.exports = {
       const allForm = await Form.findAll();
       res.status(201).send({
         status: "success",
-        data: {
-          allForm,
-        },
+        allForm,
       });
     } catch (error) {
       res.status(500).send({
@@ -34,10 +32,8 @@ module.exports = {
       });
       res.status(201).send({
         status: "success",
-        data: {
-          form,
-          question,
-        },
+        form,
+        question,
       });
     } catch (error) {
       res.status(500).send({
@@ -60,7 +56,7 @@ module.exports = {
 
       res.status(201).send({
         status: "success",
-        id: formId,
+        formId,
         message: "Form has been created",
       });
     } catch (error) {
@@ -85,7 +81,7 @@ module.exports = {
       });
       res.status(201).send({
         status: "success",
-        id: questionId,
+        questionId,
         message: "Question has been created",
       });
     } catch (error) {
@@ -192,11 +188,8 @@ module.exports = {
 
       if (!question) return res.status(404).json({ msg: "No Data Found" });
       await question.destroy();
-      const status = {
-        status: "success",
-        message: "Question has been deleted",
-      };
-      res.status(200).json(status);
+
+      res.status(200).json({ message: "Question has been deleted" });
     } catch (error) {
       res.status(500).send({
         auth: false,

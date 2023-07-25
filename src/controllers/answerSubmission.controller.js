@@ -2,6 +2,7 @@ const { Form } = require("../models");
 const { Question } = require("../models");
 const { Answer } = require("../models");
 const { Submission } = require("../models");
+const { Comment } = require("../models");
 const { nanoid } = require("nanoid");
 const path = require("path");
 const fs = require("fs");
@@ -24,8 +25,25 @@ module.exports = {
       });
     }
   },
+
   getSubmissionWithAnswerById: async (req, res) => {
     try {
+      if (req.role !== "SuperAdmin" && req.role !== "admin") {
+        const userId = req.userId;
+        const submissionOwner = await Submission.findOne({
+          where: {
+            id: req.params.id,
+            user_id: userId,
+          },
+        });
+        if (!submissionOwner) {
+          return res.status(403).send({
+            auth: false,
+            message: "Forbidden",
+          });
+        }
+      }
+
       const submission = await Submission.findOne({
         where: {
           id: req.params.id,
@@ -34,16 +52,14 @@ module.exports = {
 
       const answer = await Answer.findAll({
         where: {
-          id: req.params.id,
+          submission_id: req.params.id,
         },
       });
 
       res.status(201).send({
         status: "success",
-        data: {
-          submission,
-          answer,
-        },
+        submission,
+        answer,
       });
     } catch (error) {
       res.status(500).send({
@@ -53,20 +69,21 @@ module.exports = {
       });
     }
   },
+
   creatAnswerFromSumbmission: async (req, res) => {
     try {
       const submissionId = `answer-${nanoid(12)}`;
-
+      const statusInput = "Submitted";
       const submission = await Submission.create({
         id: submissionId,
-        user_id: req.params.userId,
+        user_id: req.userId,
         form_id: req.params.formId,
-        status: req.body.status,
+        status: statusInput,
       });
 
       const form = await Form.findOne({
         where: {
-          id: req.params.id,
+          id: req.params.formId,
         },
       });
 
@@ -115,7 +132,164 @@ module.exports = {
       res.status(200).send({
         auth: true,
         message: "Answers saved successfully",
-        data: answers,
+        submission,
+      });
+    } catch (error) {
+      res.status(500).send({
+        auth: false,
+        message: "Error",
+        errors: error,
+      });
+    }
+  },
+
+  processedSubmissionById: async (req, res) => {
+    try {
+      const submission = await Submission.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      if (!submission) {
+        return res.status(404).send({
+          message: "No Data Found",
+        });
+      }
+
+      const input = "Processed";
+      const [updatedRowsCount, updatedSubmission] = await Submission.update(
+        {
+          status: input,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+          returning: true,
+        }
+      );
+      
+
+      if (updatedRowsCount === 0) {
+        return res.status(500).send({
+          auth: false,
+          message: "Error updating submission status",
+        });
+      }
+
+      const statusUpdate = updatedSubmission.status;
+
+      res.status(200).send({
+        auth: true,
+        message: "Submission status updated",
+        statusUpdate,
+      });
+    } catch (error) {
+      res.status(500).send({
+        auth: false,
+        message: "Error",
+        errors: error,
+      });
+    }
+  },
+
+  finisedSubmissionById: async (req, res) => {
+    try {
+      const submission = await Submission.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      if (!submission) {
+        return res.status(404).send({
+          message: "No Data Found",
+        });
+      }
+
+      const input = "Done";
+      const [updatedRowsCount, updatedSubmission] = await Submission.update(
+        {
+          status: input,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+          returning: true,
+        }
+      );
+      
+
+      if (updatedRowsCount === 0) {
+        return res.status(500).send({
+          auth: false,
+          message: "Error updating submission status",
+        });
+      }
+
+      const statusUpdate = updatedSubmission.status;
+
+      res.status(200).send({
+        auth: true,
+        message: "Submission status updated",
+        statusUpdate,
+      });
+    } catch (error) {
+      res.status(500).send({
+        auth: false,
+        message: "Error",
+        errors: error,
+      });
+    }
+  },
+
+  rejectedSumbmissionById: async (req, res) => {
+    try {
+      const submission = await Submission.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      if (!submission) {
+        return res.status(404).send({
+          message: "No Data Found",
+        });
+      }
+
+      const input = "Reject";
+      const [updatedRowsCount, updatedSubmission] = await Submission.update(
+        {
+          status: input,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+          returning: true,
+        }
+      );
+      if (updatedRowsCount === 0) {
+        return res.status(500).send({
+          auth: false,
+          message: "Error updating submission status",
+        });
+      }
+
+      const commentId = `comment-${nanoid(12)}`;
+      const commentInput = req.body.input;
+      const comment = await Comment.create({
+        id: commentId,
+        submission_id: req.params.id,
+        comment_input: commentInput,
+      });
+  
+      const statusUpdate = updatedSubmission.status;
+      const adminComment = comment.comment_input;
+      res.status(200).send({
+        auth: true,
+        message: "Submission status updated",
+        statusUpdate,
+        adminComment,
       });
     } catch (error) {
       res.status(500).send({
@@ -132,7 +306,11 @@ module.exports = {
         id: req.params.id,
       },
     });
-    if (!existingAnswer) return res.status(404).json({ msg: "No Data Found" });
+    if (!existingAnswer) {
+      return res.status(404).send({
+        message: "No Data Found",
+      });
+    }
     try {
       let answerInput = req.body.input;
 

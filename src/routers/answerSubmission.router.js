@@ -9,7 +9,7 @@ submissionRouter.get("/admin/submission", verifyUser.verifyToken, verifyUser.isA
 submissionRouter.get("/admin/submission/:id", verifyUser.verifyToken, verifyUser.isAdmin, submission.getSubmissionWithAnswerById);
 submissionRouter.patch("/admin/submission/:id", verifyUser.verifyToken, verifyUser.isAdmin, submission.upadateAnswerFromSumbmissionById);
 submissionRouter.get("/submission/:id", authentication, authorization, submission.getSubmissionWithAnswerById);
-submissionRouter.post("/submission", authentication, authorization, submission.creatAnswerFromSumbmission);
+submissionRouter.post("/submission/:userId/:formId", authentication, authorization, submission.creatAnswerFromSumbmission);
 submissionRouter.patch("/submission/:id", authentication, authorization, submission.upadateAnswerFromSumbmissionById);
 submissionRouter.delete("/submission/:id", authentication, authorization, submission.deleteSubmission);
 

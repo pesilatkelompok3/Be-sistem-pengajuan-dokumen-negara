@@ -64,7 +64,10 @@ module.exports = {
     const role = "user";
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email))
-      return res.status(400).send({ statusMessage: "Bad Request", errorMessage: "Email Tidak Sesuai" });
+      return res.status(400).send({
+        statusMessage: "Bad Request",
+        errorMessage: "Email Tidak Sesuai",
+      });
     const isEmailTaken = await Account.findOne({
       attributes: ["email"],
       where: {
@@ -72,11 +75,15 @@ module.exports = {
       },
     });
     if (isEmailTaken)
-      return res.status(400).send({ statusMessage: "Bad Request", errorMessage: "Email Ini Sudah Terdaftar" });
+      return res.status(400).send({
+        statusMessage: "Bad Request",
+        errorMessage: "Email Ini Sudah Terdaftar",
+      });
     if (password !== confPassword)
-      return res
-        .status(400)
-        .send({ statusMessage: "Bad Request", errorMessage: "Password Dan Confirm Password Tidak Sesuai" });
+      return res.status(400).send({
+        statusMessage: "Bad Request",
+        errorMessage: "Password Dan Confirm Password Tidak Sesuai",
+      });
     const hashPassword = await argon2.hash(password);
     try {
       await Account.create({
