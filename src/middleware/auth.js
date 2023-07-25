@@ -40,6 +40,7 @@ const authorization = async (req, res, next) => {
   });
   if (!result) return res.status(404).json({ msg: "User Tidak Di Temukan ..." });
   if (result.id == payload.id) {
+    req.userId = payload.id;
     next();
   } else {
     return res.status(401).json({ msg: "Unauthorized" });
