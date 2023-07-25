@@ -93,7 +93,7 @@ module.exports = {
   getDetailAccount: async (req, res) => {
     try {
       const response = await Account.findOne({
-        attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
+        attributes: ["id", "name", "phone_number", "email", "birth_date", "role", "gender", "address"],
         where: {
           id: req.accountId,
         },
