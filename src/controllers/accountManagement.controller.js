@@ -8,7 +8,7 @@ module.exports = {
     if (req.role === "SuperAdmin") {
       try {
         const response = await Account.findAll({
-          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", , "role", "address"],
+          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "role", "address"],
           where: {
             [Op.or]: [{ role: "user" }, { role: "admin" }],
           },
