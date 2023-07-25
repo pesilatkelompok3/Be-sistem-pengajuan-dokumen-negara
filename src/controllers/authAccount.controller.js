@@ -50,9 +50,11 @@ module.exports = {
 
       res.cookie("refresh_token", refreshToken, {
         maxAge: 24 * 60 * 60 * 1000,
-        httpOnly: true,
+        httpOnly: secure,
+        SameSite: Strict,
+        Path: "/app",
       });
-      res.status(200).json({ msg: `Login Success : ${accessToken}` });
+      res.status(200).json({ msg: accessToken });
     } catch (error) {
       res.status(400).json({ msg: error.message });
     }
@@ -63,15 +65,20 @@ module.exports = {
     const id = `user-${nanoid(12)}`;
     const role = "user";
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) return res.status(400).json({ msg: "Email Tidak Sesuai" });
+    if (!emailRegex.test(email))
+      return res.status(400).send({ statusMessage: "Bad Request", errorMessage: "Email Tidak Sesuai" });
     const isEmailTaken = await Account.findOne({
       attributes: ["email"],
       where: {
         email: email,
       },
     });
-    if (isEmailTaken) return res.status(400).json({ msg: "Email Ini Sudah Terdaftar" });
-    if (password !== confPassword) return res.status(400).json({ msg: "Password Dan Confirm Password Tidak Sesuai" });
+    if (isEmailTaken)
+      return res.status(400).send({ statusMessage: "Bad Request", errorMessage: "Email Ini Sudah Terdaftar" });
+    if (password !== confPassword)
+      return res
+        .status(400)
+        .send({ statusMessage: "Bad Request", errorMessage: "Password Dan Confirm Password Tidak Sesuai" });
     const hashPassword = await argon2.hash(password);
     try {
       await Account.create({
@@ -82,9 +89,9 @@ module.exports = {
         password: hashPassword,
         role: role,
       });
-      res.status(201).json({ msg: "User Account Created" });
+      res.status(201).send({ msg: "User Account Created" });
     } catch (error) {
-      res.status(400).json({ msg: error.message });
+      res.status(400).send({ msg: error.message });
     }
   },
 

@@ -36,18 +36,23 @@
 						},
 						{
 							"name": "Login",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "urlencoded",
 									"urlencoded": [
 										{
 											"key": "nip",
+											"value": "47484564574352",
+											"description": "admin",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "nip",
 											"value": "123457844754",
+											"description": "super admin",
 											"type": "text"
 										},
 										{
@@ -149,16 +154,11 @@
 							"name": "Admin Register",
 							"request": {
 								"auth": {
-									"type": "apikey",
-									"apikey": [
+									"type": "bearer",
+									"bearer": [
 										{
-											"key": "value",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjg5OTI1Mzc1LCJleHAiOjE2ODk5MjUzOTB9.vxdJi_znzE3R7mIB1eKikroHBFA4ebhw9EYi6EVIYAk",
-											"type": "string"
-										},
-										{
-											"key": "key",
-											"value": "access_token",
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXItczhQV1hPWXpJT0swIiwiaWF0IjoxNjkwMTY0ODc1LCJleHAiOjE2OTAxNjUxNzV9.4jOOb8m2Gx-blO6xpOVESz6nG6SUWGIvRVFlDpayPFw",
 											"type": "string"
 										}
 									]
@@ -224,8 +224,29 @@
 						{
 							"name": "Logout",
 							"request": {
-								"method": "GET",
-								"header": []
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMDc4NDkwLCJleHAiOjE2OTAwNzg3OTB9.hngZjWjMNVO0RWMGpBSdR2vzru4CmfbJMMIHzch9nRE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/logout",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"logout"
+									]
+								}
 							},
 							"response": []
 						}
@@ -238,16 +259,11 @@
 							"name": "Get All Account",
 							"request": {
 								"auth": {
-									"type": "apikey",
-									"apikey": [
+									"type": "bearer",
+									"bearer": [
 										{
-											"key": "value",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMDAwNzYwLCJleHAiOjE2OTAwMDEwNjB9.Z2lGD0yUSGntkOf6I9j5HCLhO5Lydn6ZCnRVkRNKuhc",
-											"type": "string"
-										},
-										{
-											"key": "key",
-											"value": "access_token",
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluLTZxZVZKaHlNYzZSNCIsImlhdCI6MTY5MDE4NzM2OCwiZXhwIjoxNjkwMTg3NjY4fQ.T8EdyyoRHQZlLJhpH8Rjzb7abeA1jNIeo_Ajhw1-i0Y",
 											"type": "string"
 										}
 									]
@@ -270,26 +286,28 @@
 						},
 						{
 							"name": "Get Account By Id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
 							"request": {
 								"auth": {
-									"type": "apikey",
-									"apikey": [
+									"type": "bearer",
+									"bearer": [
 										{
-											"key": "value",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXItY2VHMkNTNmhZRVhHIiwiaWF0IjoxNjg5OTQ4MTUyLCJleHAiOjE2ODk5NDg0NTJ9.tbQS3DBfhnydaoAMFJ_5n7F-QC9pZ_R-21_CVLNbskU",
-											"type": "string"
-										},
-										{
-											"key": "key",
-											"value": "access_token",
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXItczhQV1hPWXpJT0swIiwiaWF0IjoxNjkwMTY2NDU5LCJleHAiOjE2OTAxNjY3NTl9.JSqeEABHe_Gel1Oio3Klyrnf3HNLzY30CreanQSOTJk",
 											"type": "string"
 										}
 									]
 								},
 								"method": "GET",
 								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
 								"url": {
-									"raw": "http://localhost:5000/account/2",
+									"raw": "http://localhost:5000/account/user-RbUBoOzLZcmh",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -297,7 +315,78 @@
 									"port": "5000",
 									"path": [
 										"account",
-										"2"
+										"user-RbUBoOzLZcmh"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Account Detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMTY4NDA0LCJleHAiOjE2OTAxNjg3MDR9.ixv52mP01kd_ooIMhbsyeHH2TNugqZnKI3BXuyZYdfI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Account By Role",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMTkzNjI3LCJleHAiOjE2OTAxOTM5Mjd9.fDINsg5XG4Io4g7bREhLFFXOs4aNgLChioU564sPv2k",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "role",
+											"value": "user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"role"
 									]
 								}
 							},
@@ -307,16 +396,11 @@
 							"name": "Update Account",
 							"request": {
 								"auth": {
-									"type": "apikey",
-									"apikey": [
+									"type": "bearer",
+									"bearer": [
 										{
-											"key": "value",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXItczhQV1hPWXpJT0swIiwiaWF0IjoxNjkwMDAwMzIxLCJleHAiOjE2OTAwMDA2MjF9.uEObMA84k4VmtfeMBynDjfGEJuBHm36zFBYtb65NTF0",
-											"type": "string"
-										},
-										{
-											"key": "key",
-											"value": "access_token",
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMTY4NDA0LCJleHAiOjE2OTAxNjg3MDR9.ixv52mP01kd_ooIMhbsyeHH2TNugqZnKI3BXuyZYdfI",
 											"type": "string"
 										}
 									]
@@ -328,7 +412,7 @@
 									"urlencoded": [
 										{
 											"key": "name",
-											"value": "HASBI",
+											"value": "Risu",
 											"type": "text"
 										},
 										{
@@ -346,17 +430,20 @@
 										{
 											"key": "birth_date",
 											"value": "28-10-2000",
-											"type": "text"
+											"type": "text",
+											"disabled": true
 										},
 										{
 											"key": "gender",
 											"value": "male",
-											"type": "text"
+											"type": "text",
+											"disabled": true
 										},
 										{
 											"key": "address",
 											"value": "jln. loli no 727 ",
-											"type": "text"
+											"type": "text",
+											"disabled": true
 										},
 										{
 											"key": "password",
@@ -370,7 +457,7 @@
 										},
 										{
 											"key": "id",
-											"value": "user-RbUBoOzLZcmh",
+											"value": "SuperAdmin-_nU4kZE0vozn",
 											"type": "text"
 										}
 									]
