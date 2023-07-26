@@ -1,11 +1,13 @@
 const jwt = require("jsonwebtoken");
 
 const createAccessToken = (payload) => {
-  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" });
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10800s" });
 };
 
 const createRefreshToken = (payload) => {
-  return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "1d" });
+  return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: "1d",
+  });
 };
 
 const verifyAccessToken = (token) => {
@@ -31,7 +33,9 @@ const verifyRefreshToken = (token, account, res) => {
       id: account.id,
     };
 
-    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "300s" });
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: "300s",
+    });
 
     res.status(200).json({ msg: accessToken });
   });

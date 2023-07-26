@@ -98,7 +98,7 @@
 										},
 										{
 											"key": "name",
-											"value": "bruhh",
+											"value": "iind",
 											"type": "text"
 										},
 										{
@@ -108,7 +108,7 @@
 										},
 										{
 											"key": "email",
-											"value": "bruhh@gmail.com",
+											"value": "ndii@gmail.com",
 											"type": "text"
 										},
 										{
@@ -158,7 +158,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXItczhQV1hPWXpJT0swIiwiaWF0IjoxNjkwMTY0ODc1LCJleHAiOjE2OTAxNjUxNzV9.4jOOb8m2Gx-blO6xpOVESz6nG6SUWGIvRVFlDpayPFw",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4ta1daSkI4aURJMmdRIiwiaWF0IjoxNjkwMjU5NjE0LCJleHAiOjE2OTAyNzA0MTR9.nP4G9wC3ULNcbel-qnlHmLN-X7_IKLfHAqrmQeIW8lc",
 											"type": "string"
 										}
 									]
@@ -170,12 +170,12 @@
 									"urlencoded": [
 										{
 											"key": "nip",
-											"value": "47484564574352",
+											"value": "027350257",
 											"type": "text"
 										},
 										{
 											"key": "name",
-											"value": "ndi",
+											"value": "risu",
 											"type": "text"
 										},
 										{
@@ -186,7 +186,7 @@
 										},
 										{
 											"key": "email",
-											"value": "cookyndi@gmail.com",
+											"value": "risu@gmail.com",
 											"type": "text"
 										},
 										{
@@ -263,7 +263,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluLTZxZVZKaHlNYzZSNCIsImlhdCI6MTY5MDE4NzM2OCwiZXhwIjoxNjkwMTg3NjY4fQ.T8EdyyoRHQZlLJhpH8Rjzb7abeA1jNIeo_Ajhw1-i0Y",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4ta1daSkI4aURJMmdRIiwiaWF0IjoxNjkwMjYyNzQxLCJleHAiOjE2OTAyNzM1NDF9.2YVRwdGu1E2FUfBXF-KDbMd3wvCHycuw0L4Xvhn8LgM",
 											"type": "string"
 										}
 									]
@@ -295,7 +295,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXItczhQV1hPWXpJT0swIiwiaWF0IjoxNjkwMTY2NDU5LCJleHAiOjE2OTAxNjY3NTl9.JSqeEABHe_Gel1Oio3Klyrnf3HNLzY30CreanQSOTJk",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4ta1daSkI4aURJMmdRIiwiaWF0IjoxNjkwMjU5OTUyLCJleHAiOjE2OTAyNzA3NTJ9.uCFnrvIIxxmGZrIq_z8T7K3s2PYxkgtLFf0iMqU7Pck",
 											"type": "string"
 										}
 									]
@@ -307,7 +307,7 @@
 									"urlencoded": []
 								},
 								"url": {
-									"raw": "http://localhost:5000/account/user-RbUBoOzLZcmh",
+									"raw": "http://localhost:5000/account/user-qof0JzG8ODNq",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -315,7 +315,7 @@
 									"port": "5000",
 									"path": [
 										"account",
-										"user-RbUBoOzLZcmh"
+										"user-qof0JzG8ODNq"
 									]
 								}
 							},
@@ -329,7 +329,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMTY4NDA0LCJleHAiOjE2OTAxNjg3MDR9.ixv52mP01kd_ooIMhbsyeHH2TNugqZnKI3BXuyZYdfI",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4ta1daSkI4aURJMmdRIiwiaWF0IjoxNjkwMjU5OTUyLCJleHAiOjE2OTAyNzA3NTJ9.uCFnrvIIxxmGZrIq_z8T7K3s2PYxkgtLFf0iMqU7Pck",
 											"type": "string"
 										}
 									]
