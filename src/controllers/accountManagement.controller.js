@@ -122,12 +122,18 @@ module.exports = {
 
     const { name, phone_number, birth_date, gender, address, password, confPassword } = req.body;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Z!@#$%^&*].{7,}$/;
 
     let email = req.body.email;
     if (password === "" || password === null) {
       email = account.email;
     } else {
-      if (!emailRegex.test(email)) return res.status(400).json({ msg: "Email Tidak Sesuai" });
+      if (!emailRegex.test(email))
+        return res.status(400).send({
+          statusMessage: "Bad Request",
+          type: "Not Email",
+          errorMessage: "Email Tidak Sesuai",
+        });
     }
 
     const isEmailTaken = await Account.findOne({
@@ -136,11 +142,28 @@ module.exports = {
       },
     });
     if (account.email !== email) {
-      if (isEmailTaken) return res.status(400).json({ msg: "Email Ini Sudah Terdaftar" });
+      if (isEmailTaken)
+        return res.status(400).send({
+          statusMessage: "Bad Request",
+          type: "Email Taken",
+          errorMessage: "Email Ini Sudah Terdaftar",
+        });
     }
 
     let hashPassword;
-    if (password !== confPassword) return res.status(400).json({ msg: "Password Dan Confirm Password Tidak Sesuai" });
+    if (password !== confPassword)
+      return res.status(400).send({
+        statusMessage: "Bad Request",
+        type: "Password Not Match",
+        errorMessage: "Password Dan Confirm Password Tidak Sesuai",
+      });
+    if (!passwordPattern.test(password))
+      return res.status(400).send({
+        statusMessage: "Bad Request",
+        type: "Password Pattern",
+        errorMessage:
+          "Panjang password minimal 8 karakter, yang berisikan huruf awal kapital, dan minimal harus memiliki satu simbol",
+      });
     if (password === "" || password === null) {
       hashPassword = account.password;
     } else {

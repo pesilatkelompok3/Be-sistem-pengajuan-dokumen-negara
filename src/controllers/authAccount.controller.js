@@ -63,9 +63,12 @@ module.exports = {
     const id = `user-${nanoid(12)}`;
     const role = "user";
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Z!@#$%^&*].{7,}$/;
+
     if (!emailRegex.test(email))
       return res.status(400).send({
         statusMessage: "Bad Request",
+        type: "Not Email",
         errorMessage: "Email Tidak Sesuai",
       });
     const isEmailTaken = await Account.findOne({
@@ -77,13 +80,23 @@ module.exports = {
     if (isEmailTaken)
       return res.status(400).send({
         statusMessage: "Bad Request",
+        type: "Email Taken",
         errorMessage: "Email Ini Sudah Terdaftar",
       });
     if (password !== confPassword)
       return res.status(400).send({
         statusMessage: "Bad Request",
+        type: "Password Not Match",
         errorMessage: "Password Dan Confirm Password Tidak Sesuai",
       });
+    if (!passwordPattern.test(password))
+      return res.status(400).send({
+        statusMessage: "Bad Request",
+        type: "Password Pattern",
+        errorMessage:
+          "Panjang password minimal 8 karakter, yang berisikan huruf awal kapital, dan minimal harus memiliki satu simbol",
+      });
+
     const hashPassword = await argon2.hash(password);
     try {
       await Account.create({
