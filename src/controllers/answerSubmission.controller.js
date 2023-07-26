@@ -134,6 +134,10 @@ module.exports = {
           answerInput = url;
         }
 
+        if (question.required === "required" && !answerInput) {
+          return res.status(422).json({ msg: "Required question is not answered" });
+        }
+        
         const answer = await Answer.create({
           id: `answer-${nanoid(12)}`,
           submission_id: submissionId,
