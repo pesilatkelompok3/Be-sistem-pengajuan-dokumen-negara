@@ -105,7 +105,7 @@ module.exports = {
       await Form.update(
         {
           title: req.body.title,
-          type: req.body.type,
+          description: req.body.description,
         },
         {
           where: {

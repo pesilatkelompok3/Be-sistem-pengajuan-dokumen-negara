@@ -8,6 +8,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Comment.init(
     {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.STRING
+      },
       submission_id: DataTypes.STRING,
       comment_input: DataTypes.STRING,
     },

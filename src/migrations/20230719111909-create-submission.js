@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Submission', {
+    await queryInterface.createTable('Submissions', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -18,11 +18,6 @@ module.exports = {
       },
       form_id: {
         type: Sequelize.STRING,
-        references: {
-          model: 'Forms',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
       },
       status: {
         type: Sequelize.STRING
@@ -38,6 +33,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Submission');
+    await queryInterface.dropTable('Submissions');
   }
 };

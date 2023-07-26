@@ -11,18 +11,13 @@ module.exports = {
       submission_id: {
         type: Sequelize.STRING,
         references: {
-          model: "Submission",
+          model: "Submissions",
           key: "id",
         },
         onDelete: "CASCADE",
       },
       question_id: {
         type: Sequelize.STRING,
-        references: {
-          model: "Questions",
-          key: "id",
-        },
-        onDelete: "CASCADE",
       },
       input: {
         type: Sequelize.STRING,

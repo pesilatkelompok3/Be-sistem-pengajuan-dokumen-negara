@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
   class Answer extends Model {
     static associate(models) {
       Answer.belongsTo(models.Submission, { foreignKey: 'submission_id' });
-      Answer.belongsTo(models.Question, { foreignKey: 'question_id' });
     }
   }
   Answer.init({

@@ -29,11 +29,11 @@ module.exports = {
   getSubmissionWithAnswerById: async (req, res) => {
     try {
       if (req.role !== "SuperAdmin" && req.role !== "admin") {
-        const userId = req.userId;
+        
         const submissionOwner = await Submission.findOne({
           where: {
             id: req.params.id,
-            user_id: userId,
+            user_id: req.accountId,
           },
         });
         if (!submissionOwner) {
@@ -56,7 +56,22 @@ module.exports = {
         },
       });
 
-      res.status(201).send({
+      if (submission.status === "Reject") {
+        const comment = await Comment.findOne({
+          where: {
+            submission_id: req.params.id,
+          },
+        });
+        const corection = comment.comment_input;
+        return res.status(200).send({
+          status: "success",
+          submission,
+          answer,
+          corection,
+        });
+      }
+
+      res.status(200).send({
         status: "success",
         submission,
         answer,
@@ -72,11 +87,11 @@ module.exports = {
 
   creatAnswerFromSumbmission: async (req, res) => {
     try {
-      const submissionId = `answer-${nanoid(12)}`;
+      const submissionId = `submission-${nanoid(12)}`;
       const statusInput = "Submitted";
       const submission = await Submission.create({
         id: submissionId,
-        user_id: req.userId,
+        user_id: req.accountId,
         form_id: req.params.id,
         status: statusInput,
       });
@@ -131,7 +146,7 @@ module.exports = {
 
       res.status(200).send({
         auth: true,
-        message: "Answers saved successfully",
+        message: "Submission has created",
         submission,
       });
     } catch (error) {
@@ -168,7 +183,6 @@ module.exports = {
           returning: true,
         }
       );
-      
 
       if (updatedRowsCount === 0) {
         return res.status(500).send({
@@ -218,7 +232,6 @@ module.exports = {
           returning: true,
         }
       );
-      
 
       if (updatedRowsCount === 0) {
         return res.status(500).send({
@@ -282,7 +295,7 @@ module.exports = {
         submission_id: req.params.id,
         comment_input: commentInput,
       });
-  
+
       const statusUpdate = updatedSubmission.status;
       const adminComment = comment.comment_input;
       res.status(200).send({
@@ -301,75 +314,84 @@ module.exports = {
   },
 
   upadateAnswerFromSumbmissionById: async (req, res) => {
-    if (req.role !== "SuperAdmin" && req.role !== "admin") {
-      const userId = req.userId;
-      const submissionOwner = await Submission.findOne({
-        where: {
-          id: req.params.id,
-          user_id: userId,
-        },
-      });
-      if (!submissionOwner) {
-        return res.status(403).send({
-          auth: false,
-          message: "Forbidden",
-        });
-      }
-    }
-    const existingAnswer = await Answer.findOne({
-      where: {
-        id: req.params.id,
-      },
-    });
-    if (!existingAnswer) {
-      return res.status(404).send({
-        message: "No Data Found",
-      });
-    }
     try {
-      let answerInput = req.body.input;
-
-      if (req.files) {
-        const file = req.files.file;
-        const fileSize = file.data.length;
-        const ext = path.extname(file.name);
-        const fileName = `${nanoid(12)}${ext}`;
-        const url = `${req.protocol}://${req.get("host")}/file/${fileName}`;
-        const uploadPath = `./src/public/file/${fileName}`;
-
-        if (fileSize > 3000000) {
-          return res
-            .status(422)
-            .json({ message: "File must be less than 3 MB" });
-        }
-        const oldFileName = existingAnswer.input.split("/").pop();
-        const oldfile = `./src/public/file/${oldFileName}`;
-        fs.unlinkSync(oldfile);
-
-        file.mv(uploadPath, (err) => {
-          if (err) {
-            console.error("Error uploading file:", err);
-            return res.status(500).json({ message: "Failed to upload file" });
-          }
-        });
-
-        answerInput = url;
-      }
-      const updatedAnswer = await Answer.update(
-        {
-          input: answerInput,
-        },
-        {
+      if (req.role !== "SuperAdmin" && req.role !== "admin") {
+        const submissionOwner = await Submission.findOne({
           where: {
             id: req.params.id,
+            user_id: req.accountId,
           },
+        });
+        if (!submissionOwner) {
+          return res.status(403).send({
+            auth: false,
+            message: "Forbidden",
+          });
         }
-      );
+      }
+
+      const oldAnswers = await Answer.findAll({
+        where: {
+          submission_id: req.params.id,
+        },
+      });
+
+      if (!oldAnswers) {
+        return res.status(404).send({
+          message: "Submission not found",
+        });
+      }
+
+      const answers = [];
+
+      for (const oldAnswer of oldAnswers) {
+        let answerInput = req.body[oldAnswer.question_id];
+        if (req.files) {
+          const file = req.files[oldAnswer.question_id];
+          if (file) {
+            const fileSize = file.data.length;
+            const ext = path.extname(file.name);
+            const fileName = `${nanoid(12)}${ext}`;
+            const url = `${req.protocol}://${req.get("host")}/file/${fileName}`;
+            const uploadPath = `./src/public/file/${fileName}`;
+
+            if (fileSize > 3000000)
+              return res
+                .status(422)
+                .json({ msg: "Image must be less than 3 MB" });
+
+            const oldFileName = oldAnswer.input.split("/").pop();
+            const oldfile = `./src/public/file/${oldFileName}`;
+            fs.unlinkSync(oldfile);
+
+            file.mv(uploadPath, (err) => {
+              if (err) {
+                console.error("Error uploading file:", err);
+              }
+            });
+
+            answerInput = url;
+          }
+        }
+
+        const answer = await Answer.update(
+          {
+            input: answerInput,
+          },
+          {
+            where: {
+              question_id: oldAnswer.question_id,
+              submission_id: req.params.id,
+            },
+          }
+        );
+
+        answers.push(answer);
+      }
 
       res.status(200).send({
         auth: true,
-        message: "Answer updated successfully",
-        data: updatedAnswer,
+        message: "Submission updated successfully",
       });
     } catch (error) {
       res.status(500).send({
@@ -386,7 +408,7 @@ module.exports = {
       const submissionOwner = await Submission.findOne({
         where: {
           id: req.params.id,
-          user_id: userId,
+          user_id: req.accountId,
         },
       });
       if (!submissionOwner) {
@@ -405,7 +427,7 @@ module.exports = {
 
     const answers = await Answer.findAll({
       where: {
-        form_id: submission.id,
+        submission_id: submission.id,
       },
     });
     if (!answers) return res.status(404).json({ msg: "No Data Found" });
