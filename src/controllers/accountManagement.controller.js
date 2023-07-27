@@ -20,7 +20,7 @@ module.exports = {
     } else if (req.role === "admin") {
       try {
         const response = await Account.findAll({
-          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "address"],
+          attributes: ["id", "nip", "name", "phone_number", "email", "birth_date", "gender", "address"],
           where: {
             role: "user",
           },
@@ -38,7 +38,7 @@ module.exports = {
     if (req.role === "SuperAdmin" || req.role === "admin") {
       try {
         const response = await Account.findOne({
-          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "role", "address"],
+          attributes: ["id", "nip", "name", "phone_number", "email", "birth_date", "gender", "role", "address"],
           where: {
             id: req.params.id,
           },
@@ -64,7 +64,7 @@ module.exports = {
     if (req.role === "SuperAdmin") {
       try {
         const response = await Account.findAll({
-          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "role", "address"],
+          attributes: ["id", "nip", "name", "phone_number", "email", "birth_date", "gender", "role", "address"],
           where: {
             role: req.body.role,
           },
@@ -93,7 +93,7 @@ module.exports = {
   getDetailAccount: async (req, res) => {
     try {
       const response = await Account.findOne({
-        attributes: ["id", "name", "phone_number", "email", "birth_date", "role", "gender", "address"],
+        attributes: ["id", "nip", "name", "phone_number", "email", "birth_date", "role", "gender", "address"],
         where: {
           id: req.accountId,
         },
@@ -187,6 +187,43 @@ module.exports = {
     }
   },
 
+  deleteAccountParams: async (req, res) => {
+    if (req.role === "admin" || req.role === "SuperAdmin") {
+      const account = await Account.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      if (!account) return res.status(404).json({ msg: "account Tidak Di Temukan" });
+      try {
+        await Account.destroy({
+          where: {
+            id: account.id,
+          },
+        });
+        res.status(200).json({ msg: "account Berhasil Di hapus" });
+      } catch (error) {
+        res.status(400).json({ msg: error.message });
+      }
+    } else if (req.role === "user") {
+      const account = await Account.findOne({
+        where: {
+          id: req.accountId,
+        },
+      });
+      if (!account) return res.status(404).json({ msg: "account Tidak Di Temukan" });
+      try {
+        await Account.destroy({
+          where: {
+            id: account.id,
+          },
+        });
+        res.status(200).json({ msg: "account Berhasil Di hapus" });
+      } catch (error) {
+        res.status(400).json({ msg: error.message });
+      }
+    }
+  },
   deleteAccount: async (req, res) => {
     if (req.role === "admin" || req.role === "SuperAdmin") {
       const account = await Account.findOne({

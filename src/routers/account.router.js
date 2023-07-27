@@ -16,5 +16,6 @@ accountRouter.get("/role", authentication, accountManagement.getAccountByRole);
 accountRouter.get("/me", authentication, accountManagement.getDetailAccount);
 accountRouter.patch("/account", authentication, accountManagement.updateAccount);
 accountRouter.delete("/account", authentication, accountManagement.deleteAccount);
+accountRouter.delete("/account/:id", authentication, accountManagement.deleteAccountParams);
 
 module.exports = accountRouter;
