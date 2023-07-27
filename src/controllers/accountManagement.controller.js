@@ -157,16 +157,16 @@ module.exports = {
         type: "Password Not Match",
         errorMessage: "Password Dan Confirm Password Tidak Sesuai",
       });
-    if (!passwordPattern.test(password))
-      return res.status(400).send({
-        statusMessage: "Bad Request",
-        type: "Password Pattern",
-        errorMessage:
-          "Panjang password minimal 8 karakter, yang berisikan huruf awal kapital, dan minimal harus memiliki satu simbol",
-      });
     if (password === "" || password === null) {
       hashPassword = account.password;
     } else {
+      if (!passwordPattern.test(password))
+        return res.status(400).send({
+          statusMessage: "Bad Request",
+          type: "Password Pattern",
+          errorMessage:
+            "Panjang password minimal 8 karakter, yang berisikan huruf awal kapital, dan minimal harus memiliki satu simbol",
+        });
       hashPassword = await argon2.hash(password);
     }
 
