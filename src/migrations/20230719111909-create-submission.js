@@ -16,6 +16,9 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
+      user_name: {
+        type: Sequelize.STRING,
+      },
       form_id: {
         type: Sequelize.STRING,
       },
