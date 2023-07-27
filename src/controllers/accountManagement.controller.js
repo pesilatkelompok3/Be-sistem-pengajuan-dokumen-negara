@@ -125,7 +125,7 @@ module.exports = {
     const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Z!@#$%^&*].{7,}$/;
 
     let email = req.body.email;
-    if (password === "" || password === null) {
+    if (email === "" || email === null) {
       email = account.email;
     } else {
       if (!emailRegex.test(email))
