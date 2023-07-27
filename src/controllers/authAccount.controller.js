@@ -1,7 +1,11 @@
 const { Account } = require("../models");
 const argon2 = require("argon2");
 const { nanoid } = require("nanoid");
-const { verifyRefreshToken, createRefreshToken, createAccessToken } = require("../helpers/jwt.js");
+const {
+  verifyRefreshToken,
+  createRefreshToken,
+  createAccessToken,
+} = require("../helpers/jwt.js");
 
 module.exports = {
   refreshToken: async (req, res) => {
@@ -38,24 +42,28 @@ module.exports = {
         });
       }
 
-      if (!account) return res.status(404).json({ msg: "Account Tidak Di Temukan" });
+      if (!account)
+        return res.status(404).json({ msg: "Account Tidak Di Temukan" });
       const match = await argon2.verify(account.password, password);
-      if (!match) return res.status(400).json({ msg: "Password Yang Anda Masukan Salah" });
+      if (!match)
+        return res
+          .status(400)
+          .json({ msg: "Password Yang Anda Masukan Salah" });
       const payload = {
         id: account.id,
       };
       const accessToken = createAccessToken(payload);
       const refreshToken = createRefreshToken(payload);
-      await Account.update({ refresh_token: refreshToken }, { where: { id: account.id } });
+      await Account.update(
+        { refresh_token: refreshToken },
+        { where: { id: account.id } }
+      );
 
       res.cookie("refresh_token", refreshToken, {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: true,
-        SameSite: "strict",
-        Path: "/app",
       });
-      res.status(200).json({ msg: accessToken });
+      res.status(200).json({ msg: accessToken, refresh_token: refreshToken });
     } catch (error) {
       res.status(400).json({ msg: error.message });
     }
@@ -66,8 +74,14 @@ module.exports = {
     const id = `user-${nanoid(12)}`;
     const role = "user";
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Z!@#$%^&*].{7,}$/;
+
     if (!emailRegex.test(email))
-      return res.status(400).send({ statusMessage: "Bad Request", errorMessage: "Email Tidak Sesuai" });
+      return res.status(400).send({
+        statusMessage: "Bad Request",
+        type: "Not Email",
+        errorMessage: "Email Tidak Sesuai",
+      });
     const isEmailTaken = await Account.findOne({
       attributes: ["email"],
       where: {
@@ -75,11 +89,25 @@ module.exports = {
       },
     });
     if (isEmailTaken)
-      return res.status(400).send({ statusMessage: "Bad Request", errorMessage: "Email Ini Sudah Terdaftar" });
+      return res.status(400).send({
+        statusMessage: "Bad Request",
+        type: "Email Taken",
+        errorMessage: "Email Ini Sudah Terdaftar",
+      });
     if (password !== confPassword)
-      return res
-        .status(400)
-        .send({ statusMessage: "Bad Request", errorMessage: "Password Dan Confirm Password Tidak Sesuai" });
+      return res.status(400).send({
+        statusMessage: "Bad Request",
+        type: "Password Not Match",
+        errorMessage: "Password Dan Confirm Password Tidak Sesuai",
+      });
+    if (!passwordPattern.test(password))
+      return res.status(400).send({
+        statusMessage: "Bad Request",
+        type: "Password Pattern",
+        errorMessage:
+          "Panjang password minimal 8 karakter, yang berisikan huruf awal kapital, dan minimal harus memiliki satu simbol",
+      });
+
     const hashPassword = await argon2.hash(password);
     try {
       await Account.create({
@@ -114,11 +142,15 @@ module.exports = {
             nip: nip,
           },
         });
-        if (isNipTaken) return res.status(400).json({ msg: "Nip Ini Sudah Terdaftar" });
+        if (isNipTaken)
+          return res.status(400).json({ msg: "Nip Ini Sudah Terdaftar" });
 
-        if (!emailRegex.test(email)) return res.status(400).json({ msg: "Email Tidak Sesuai" });
+        if (!emailRegex.test(email))
+          return res.status(400).json({ msg: "Email Tidak Sesuai" });
         if (password !== confPassword)
-          return res.status(400).json({ msg: "Password Dan Confirm Password Tidak Sesuai" });
+          return res
+            .status(400)
+            .json({ msg: "Password Dan Confirm Password Tidak Sesuai" });
         const hashedPassword = await argon2.hash(password);
 
         await Account.create({
