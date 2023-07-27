@@ -187,6 +187,44 @@ module.exports = {
     }
   },
 
+  deleteAccountParams: async (req, res) => {
+    if (req.role === "admin" || req.role === "SuperAdmin") {
+      const account = await Account.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      if (!account) return res.status(404).json({ msg: "account Tidak Di Temukan" });
+      try {
+        await Account.destroy({
+          where: {
+            id: account.id,
+          },
+        });
+        res.status(200).json({ msg: "account Berhasil Di hapus" });
+      } catch (error) {
+        res.status(400).json({ msg: error.message });
+      }
+    } else if (req.role === "user") {
+      const account = await Account.findOne({
+        where: {
+          id: req.accountId,
+        },
+      });
+      if (!account) return res.status(404).json({ msg: "account Tidak Di Temukan" });
+      try {
+        await Account.destroy({
+          where: {
+            id: account.id,
+          },
+        });
+        res.status(200).json({ msg: "account Berhasil Di hapus" });
+      } catch (error) {
+        res.status(400).json({ msg: error.message });
+      }
+    }
+  },
+
   deleteAccount: async (req, res) => {
     if (req.role === "admin" || req.role === "SuperAdmin") {
       const account = await Account.findOne({
