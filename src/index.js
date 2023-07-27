@@ -1,13 +1,20 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
+const FileUpload = require("express-fileupload");
 const accountRouter = require("./routers/account.router.js");
 const formRouter = require("./routers/formQuestion.router.js");
-const submissionRouter = require("./routers/answerSubmission.router.js")
+const submissionRouter = require("./routers/answerSubmission.router.js");
 dotenv.config();
 
 const app = express();
+app.use(
+  cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL,
+  })
+);
 app.use(cookieParser());
 const port = 5000;
 
@@ -17,12 +24,8 @@ app.use(
     extended: true,
   })
 );
-app.use(
-  cors({
-    credentials: true,
-    origin: process.env.CLIENT_URL,
-  })
-);
+app.use(FileUpload());
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(

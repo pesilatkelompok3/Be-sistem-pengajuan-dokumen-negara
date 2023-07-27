@@ -5,14 +5,13 @@ module.exports = {
     await queryInterface.createTable('Comments', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       submission_id: {
         type: Sequelize.STRING,
         references: {
-          model: "Submission",
+          model: "Submissions",
           key: "id",
         },
         onDelete: "CASCADE",
