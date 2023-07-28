@@ -224,10 +224,6 @@ module.exports = {
       }
     }
   },
-<<<<<<< HEAD
-
-=======
->>>>>>> auth
   deleteAccount: async (req, res) => {
     if (req.role === "admin" || req.role === "SuperAdmin") {
       const account = await Account.findOne({
