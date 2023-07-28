@@ -1,4 +1,5 @@
 const { Form } = require("../models");
+const { Account } = require("../models");
 const { Question } = require("../models");
 const { Answer } = require("../models");
 const { Submission } = require("../models");
@@ -87,11 +88,19 @@ module.exports = {
 
   creatAnswerFromSumbmission: async (req, res) => {
     try {
+      const account = await Account.findOne({
+        where: {
+          id: req.accountId,
+        },
+      });
+
       const submissionId = `submission-${nanoid(12)}`;
+      const name = account.name;
       const statusInput = "Submitted";
       const submission = await Submission.create({
         id: submissionId,
         user_id: req.accountId,
+        user_name: name,
         form_id: req.params.id,
         status: statusInput,
       });

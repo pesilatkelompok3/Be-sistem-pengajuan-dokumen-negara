@@ -42,22 +42,15 @@ module.exports = {
         });
       }
 
-      if (!account)
-        return res.status(404).json({ msg: "Account Tidak Di Temukan" });
+      if (!account) return res.status(404).json({ msg: "Account Tidak Di Temukan" });
       const match = await argon2.verify(account.password, password);
-      if (!match)
-        return res
-          .status(400)
-          .json({ msg: "Password Yang Anda Masukan Salah" });
+      if (!match) return res.status(400).json({ msg: "Password Yang Anda Masukan Salah" });
       const payload = {
         id: account.id,
       };
       const accessToken = createAccessToken(payload);
       const refreshToken = createRefreshToken(payload);
-      await Account.update(
-        { refresh_token: refreshToken },
-        { where: { id: account.id } }
-      );
+      await Account.update({ refresh_token: refreshToken }, { where: { id: account.id } });
 
       res.cookie("refresh_token", refreshToken, {
         maxAge: 24 * 60 * 60 * 1000,
