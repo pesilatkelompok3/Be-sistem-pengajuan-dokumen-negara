@@ -25,9 +25,9 @@ module.exports = {
           id: req.params.id,
         },
       });
-      const question = await Question.findOne({
+      const question = await Question.findAll({
         where: {
-          id: req.params.id,
+          form_id: req.params.id,
         },
       });
       res.status(201).send({
@@ -47,17 +47,36 @@ module.exports = {
   createForm: async (req, res) => {
     try {
       const formId = `form-${nanoid(12)}`;
-
+      const title = req.body.form.title;
+      const description = req.body.form.description;
       const form = await Form.create({
         id: formId,
-        title: req.body.title,
-        description: req.body.description,
+        title: title,
+        description: description,
       });
 
-      res.status(201).send({
-        status: "success",
-        formId,
-        message: "Form has been created",
+      const questions = req.body.form.question;
+      const inputs = [];
+      for (const question of questions) {
+        const titleField = question.title_field;
+        const type = question.type;
+        const required = question.required;
+
+        const input = await Question.create({
+          id: `question-${nanoid(12)}`,
+          form_id: formId,
+          title_field: titleField,
+          type: type,
+          required: required,
+        });
+
+        inputs.push(input);
+      }
+
+      res.status(200).send({
+        auth: true,
+        message: "Form has created",
+        form,
       });
     } catch (error) {
       res.status(500).send({
