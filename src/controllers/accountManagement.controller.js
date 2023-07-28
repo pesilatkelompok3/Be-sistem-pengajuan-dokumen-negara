@@ -180,7 +180,11 @@ module.exports = {
       }
     } else if (account.role === "admin") {
       if (req.role === "admin" || req.role === "user") {
-        res.status(403).json({ msg: "Akses Ditolak" });
+        if (req.accountId === account.id) {
+          updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
+        } else {
+          res.status(403).json({ msg: "Akses Ditolak" });
+        }
       } else {
         updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
       }
