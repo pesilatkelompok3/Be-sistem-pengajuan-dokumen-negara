@@ -27,10 +27,30 @@ module.exports = {
     }
   },
 
+  getSubmissionUser: async (req, res) => {
+    try {
+      const submissionOwner = await Submission.findAll({
+        where: {
+          user_id: req.accountId,
+        },
+      });
+
+      return res.status(200).send({
+        status: "success",
+        submissionOwner,
+      });
+    } catch (error) {
+      res.status(500).send({
+        auth: false,
+        message: "Error",
+        errors: error,
+      });
+    }
+  },
+
   getSubmissionWithAnswerById: async (req, res) => {
     try {
       if (req.role !== "SuperAdmin" && req.role !== "admin") {
-        
         const submissionOwner = await Submission.findOne({
           where: {
             id: req.params.id,
@@ -51,6 +71,20 @@ module.exports = {
         },
       });
 
+      const formId = submission.form_id;
+
+      const form = await Form.findOne({
+        where: {
+          id: formId,
+        },
+      });
+
+      const questions = await Question.findAll({
+        where: {
+          form_id: formId,
+        },
+      });
+
       const answer = await Answer.findAll({
         where: {
           submission_id: req.params.id,
@@ -66,6 +100,8 @@ module.exports = {
         const corection = comment.comment_input;
         return res.status(200).send({
           status: "success",
+          form,
+          questions,
           submission,
           answer,
           corection,
@@ -74,6 +110,8 @@ module.exports = {
 
       res.status(200).send({
         status: "success",
+        form,
+        questions,
         submission,
         answer,
       });
@@ -144,9 +182,11 @@ module.exports = {
         }
 
         if (question.required === "1" && !answerInput) {
-          return res.status(422).json({ msg: "Required question is not answered" });
+          return res
+            .status(422)
+            .json({ msg: "Required question is not answered" });
         }
-        
+
         const answer = await Answer.create({
           id: `answer-${nanoid(12)}`,
           submission_id: submissionId,

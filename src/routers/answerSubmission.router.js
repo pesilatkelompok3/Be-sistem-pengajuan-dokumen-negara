@@ -45,6 +45,11 @@ submissionRouter.get(
   authentication,
   submission.getSubmissionWithAnswerById
 );
+submissionRouter.get(
+  "/submission",
+  authentication,
+  submission.getSubmissionUser
+);
 submissionRouter.post(
   "/submission/:id",
   authentication,
