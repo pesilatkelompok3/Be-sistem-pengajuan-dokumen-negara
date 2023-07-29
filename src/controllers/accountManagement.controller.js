@@ -43,20 +43,22 @@ module.exports = {
             id: req.params.id,
           },
         });
-        if (req.role === "admin") {
-          if (response.role === "SuperAdmin" || response.role === "admin") {
-            res.status(403).json({ msg: "Akses Ditolak" });
-          } else {
-            res.status(200).json(response);
-          }
-        } else {
-          res.status(200).json(response);
-        }
+        res.status(200).json(response);
       } catch (error) {
         res.status(500).json({ msg: error.message });
       }
-    } else {
-      res.status(403).json({ msg: "Akses Ditolak" });
+    } else if (req.role === "user") {
+      try {
+        const response = await Account.findOne({
+          attributes: ["id", "name", "phone_number", "email", "birth_date", "gender", "role", "address"],
+          where: {
+            id: req.params.id,
+          },
+        });
+        res.status(200).json(response);
+      } catch (error) {
+        res.status(500).json({ msg: error.message });
+      }
     }
   },
 
@@ -178,7 +180,11 @@ module.exports = {
       }
     } else if (account.role === "admin") {
       if (req.role === "admin" || req.role === "user") {
-        res.status(403).json({ msg: "Akses Ditolak" });
+        if (req.accountId === account.id) {
+          updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
+        } else {
+          res.status(403).json({ msg: "Akses Ditolak" });
+        }
       } else {
         updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
       }
