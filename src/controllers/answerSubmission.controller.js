@@ -143,7 +143,7 @@ module.exports = {
           answerInput = url;
         }
 
-        if (question.required === "required" && !answerInput) {
+        if (question.required === "1" && !answerInput) {
           return res.status(422).json({ msg: "Required question is not answered" });
         }
         

@@ -49,10 +49,12 @@ module.exports = {
       const formId = `form-${nanoid(12)}`;
       const title = req.body.form.title;
       const description = req.body.form.description;
+      const rule = req.body.form.rule;
       const form = await Form.create({
         id: formId,
         title: title,
         description: description,
+        completeness: rule,
       });
 
       const questions = req.body.form.question;
