@@ -29,15 +29,26 @@ module.exports = {
 
   getSubmissionUser: async (req, res) => {
     try {
-      const submissionOwner = await Submission.findAll({
+      const submissions = await Submission.findAll({
         where: {
           user_id: req.accountId,
         },
       });
-
+  
+      const forms = await Form.findAll();
+  
+      let dataSubmission = submissions.map((submission) => ({
+        id: submission.id,
+        user_id: submission.user_id,
+        user_name: submission.user_name,
+        form_id: submission.form_id,
+        status: submission.status,
+        form_title: forms.find((form) => form.id === submission.form_id)?.title || null,
+      }));
+  
       return res.status(200).send({
         status: "success",
-        submissionOwner,
+        submissionOwner: dataSubmission, 
       });
     } catch (error) {
       res.status(500).send({
@@ -132,22 +143,25 @@ module.exports = {
         },
       });
 
+      const form = await Form.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+    
+
       const submissionId = `submission-${nanoid(12)}`;
       const name = account.name;
+      const formTitle = form.title;
       const statusInput = "Submitted";
       const submission = await Submission.create({
         id: submissionId,
         user_id: req.accountId,
         user_name: name,
         form_id: req.params.id,
+        form_title: formTitle,
         status: statusInput,
-      });
-
-      const form = await Form.findOne({
-        where: {
-          id: req.params.id,
-        },
-      });
+      });   
 
       const questions = await Question.findAll({
         where: {

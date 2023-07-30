@@ -10,6 +10,8 @@ module.exports = {
         title_field: "Nama Lengkap Bayi",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-111",
@@ -17,6 +19,8 @@ module.exports = {
         title_field: "Tempat dan Tanggal Lahir",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-112",
@@ -24,6 +28,8 @@ module.exports = {
         title_field: "Jenis Kelamin",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-113",
@@ -31,6 +37,8 @@ module.exports = {
         title_field: "Nama Orang Tua",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-114",
@@ -38,6 +46,8 @@ module.exports = {
         title_field: "Kewarnanegaraan",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-115",
@@ -45,6 +55,8 @@ module.exports = {
         title_field: "Agama",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-116",
@@ -52,6 +64,8 @@ module.exports = {
         title_field: "Pekerjaan Orang Tua Bayi",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-117",
@@ -59,6 +73,8 @@ module.exports = {
         title_field: "Alamat Tempat Tinggal",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-118",
@@ -66,6 +82,8 @@ module.exports = {
         title_field: "Nomor Kartu Keluarga",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-119",
@@ -73,6 +91,8 @@ module.exports = {
         title_field: "NIK Orang Tua Bayi",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-120",
@@ -80,6 +100,8 @@ module.exports = {
         title_field: "Upload Surat Nikah",
         type: "image-upload",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-121",
@@ -87,6 +109,8 @@ module.exports = {
         title_field: "Upload Surat Keterangan Lahir",
         type: "image-upload",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-122",
@@ -94,6 +118,8 @@ module.exports = {
         title_field: "Upload Kartu Identitas",
         type: "image-upload",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-123",
@@ -101,6 +127,8 @@ module.exports = {
         title_field: "Nama Lengkap Almarhum/Almarhumah",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-124",
@@ -108,6 +136,8 @@ module.exports = {
         title_field: "Tempat dan Tanggal Kematian",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-125",
@@ -115,6 +145,8 @@ module.exports = {
         title_field: "Tempat dan Tanggal Lahir",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-126",
@@ -122,6 +154,8 @@ module.exports = {
         title_field: "Jenis Kelamin",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-127",
@@ -129,6 +163,8 @@ module.exports = {
         title_field: "Agama",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-128",
@@ -136,6 +172,8 @@ module.exports = {
         title_field: "Status Perkawinan",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-129",
@@ -143,6 +181,8 @@ module.exports = {
         title_field: "Nama Pasangan (jika sudah menikah)",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-130",
@@ -150,6 +190,8 @@ module.exports = {
         title_field: "Nama Orang Tua",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-131",
@@ -157,6 +199,8 @@ module.exports = {
         title_field: "Kewarganegaraan",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-132",
@@ -164,6 +208,8 @@ module.exports = {
         title_field: "Pekerjaan",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-133",
@@ -171,6 +217,8 @@ module.exports = {
         title_field: "Alamat Tempat Tinggal",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-134",
@@ -178,6 +226,8 @@ module.exports = {
         title_field: "Penyebab Kematian",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-135",
@@ -185,6 +235,8 @@ module.exports = {
         title_field: "Upload Kartu Tanda Penduduk (KTP)",
         type: "image-upload",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-136",
@@ -192,6 +244,8 @@ module.exports = {
         title_field: "Upload Surat Kematian dari Rumah Sakit (jika ada)",
         type: "image-upload",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-137",
@@ -199,6 +253,8 @@ module.exports = {
         title_field: "Nama Pemohon",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-138",
@@ -206,6 +262,8 @@ module.exports = {
         title_field: "Alamat Pemohon",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-139",
@@ -213,6 +271,8 @@ module.exports = {
         title_field: "Jenis Bangunan",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-140",
@@ -220,6 +280,8 @@ module.exports = {
         title_field: "Lokasi Bangunan",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-141",
@@ -227,6 +289,8 @@ module.exports = {
         title_field: "Luas Tanah",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-142",
@@ -234,6 +298,8 @@ module.exports = {
         title_field: "Luas Bangunan",
         type: "short-text",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-143",
@@ -241,6 +307,8 @@ module.exports = {
         title_field: "Upload Desain Bangunan",
         type: "image-upload",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: "question-144",
@@ -248,12 +316,14 @@ module.exports = {
         title_field: "Upload Surat Izin Lingkungan",
         type: "image-upload",
         required: "1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ];
     await queryInterface.bulkInsert("Questions", questionDummy);
   },
 
   async down (queryInterface, Sequelize) {
-    
+    await queryInterface.bulkDelete("Questions", questionDummy);
   }
 };

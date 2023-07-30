@@ -43,7 +43,24 @@ module.exports = {
       });
     }
   },
+getCompleteness: async (req, res) => {
+try {
+  const completeness = await Form.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  const data = completeness.completeness;
 
+  res.status(201).send({
+    status: "success",
+    data,
+  });
+
+} catch (error) {
+  
+}
+},
   createForm: async (req, res) => {
     try {
       const formId = `form-${nanoid(12)}`;
@@ -74,11 +91,16 @@ module.exports = {
 
         inputs.push(input);
       }
-
+      const questionData = await Question.findAll({
+        where: {
+          form_id: formId,
+        },
+      });
       res.status(200).send({
         auth: true,
         message: "Form has created",
         form,
+        questionData,
       });
     } catch (error) {
       res.status(500).send({
@@ -123,10 +145,12 @@ module.exports = {
     if (!form) return res.status(404).json({ msg: "No Data Found" });
 
     try {
+      const rule = req.body.form.rule;
       await Form.update(
         {
           title: req.body.title,
           description: req.body.description,
+          completeness: rule,
         },
         {
           where: {
