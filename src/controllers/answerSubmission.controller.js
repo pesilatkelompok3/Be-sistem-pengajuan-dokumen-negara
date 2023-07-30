@@ -153,7 +153,7 @@ module.exports = {
       const submissionId = `submission-${nanoid(12)}`;
       const name = account.name;
       const formTitle = form.title;
-      const statusInput = "Submitted";
+      const statusInput = "Diajukan";
       const submission = await Submission.create({
         id: submissionId,
         user_id: req.accountId,
@@ -238,7 +238,7 @@ module.exports = {
         });
       }
 
-      const input = "Processed";
+      const input = "Diproses";
       const [updatedRowsCount, updatedSubmission] = await Submission.update(
         {
           status: input,
@@ -287,7 +287,7 @@ module.exports = {
         });
       }
 
-      const input = "Done";
+      const input = "Selesai";
       const [updatedRowsCount, updatedSubmission] = await Submission.update(
         {
           status: input,
@@ -336,7 +336,7 @@ module.exports = {
         });
       }
 
-      const input = "Reject";
+      const input = "Ditolak";
       const [updatedRowsCount, updatedSubmission] = await Submission.update(
         {
           status: input,
