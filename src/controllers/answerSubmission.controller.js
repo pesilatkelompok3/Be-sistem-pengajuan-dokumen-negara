@@ -11,19 +11,22 @@ const fs = require("fs");
 module.exports = {
   getAllSubmission: async (req, res) => {
     try {
-      const allSubmission = await Submission.findAll({
-        include: [{
-          model: Form,
-          attributes: ['title'],
-          where: Sequelize.col('Form.id = Submission.form_id'),
-        }],
-      });
+      const submissions = await Submission.findAll();
   
-      res.status(200).send({
+      const forms = await Form.findAll();
+  
+      let dataSubmission = submissions.map((submission) => ({
+        id: submission.id,
+        user_id: submission.user_id,
+        user_name: submission.user_name,
+        form_id: submission.form_id,
+        status: submission.status,
+        form_title: forms.find((form) => form.id === submission.form_id)?.title || null,
+      }));
+  
+      return res.status(200).send({
         status: "success",
-        data: {
-          allSubmission,
-        },
+        submissionOwner: dataSubmission, 
       });
     } catch (error) {
       res.status(500).send({
