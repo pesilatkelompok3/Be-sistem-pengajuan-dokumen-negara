@@ -356,11 +356,10 @@ module.exports = {
       }
 
       const commentId = `comment-${nanoid(12)}`;
-      const commentInput = req.body.input;
       const comment = await Comment.create({
         id: commentId,
         submission_id: req.params.id,
-        comment_input: commentInput,
+        comment_input: req.body.c_input,
       });
 
       const statusUpdate = updatedSubmission.status;
