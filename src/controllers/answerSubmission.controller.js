@@ -11,8 +11,15 @@ const fs = require("fs");
 module.exports = {
   getAllSubmission: async (req, res) => {
     try {
-      const allSubmission = await Submission.findAll();
-      res.status(201).send({
+      const allSubmission = await Submission.findAll({
+        include: [{
+          model: Form,
+          attributes: ['title'],
+          where: Sequelize.col('Form.id = Submission.form_id'),
+        }],
+      });
+  
+      res.status(200).send({
         status: "success",
         data: {
           allSubmission,
@@ -307,12 +314,22 @@ module.exports = {
         });
       }
 
+      const commentId = `comment-${nanoid(12)}`;
+      const commentInput = req.body.c_input;
+      const comment = await Comment.create({
+        id: commentId,
+        submission_id: req.params.id,
+        comment_input: commentInput,
+      });
+
       const statusUpdate = updatedSubmission.status;
+      const adminComment = comment.comment_input;
 
       res.status(200).send({
         auth: true,
         message: "Submission status updated",
         statusUpdate,
+        adminComment,
       });
     } catch (error) {
       res.status(500).send({
@@ -356,7 +373,7 @@ module.exports = {
       }
 
       const commentId = `comment-${nanoid(12)}`;
-      const commentInput = req.body.input;
+      const commentInput = req.body.c_input;
       const comment = await Comment.create({
         id: commentId,
         submission_id: req.params.id,
