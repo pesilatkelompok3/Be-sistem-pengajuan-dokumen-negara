@@ -202,7 +202,7 @@ module.exports = {
           const fileSize = file.data.length;
           const ext = path.extname(file.name);
           const fileName = `${nanoid(12)}${ext}`;
-          const url = `${req.protocol}://${req.get("host")}/file/${fileName}`;
+          const url = `${req.protocol}://${req.get("host")}/src/public/file/${fileName}`;
           const uploadPath = `./src/public/file/${fileName}`;
 
           if (fileSize > 3000000)
@@ -450,7 +450,7 @@ module.exports = {
             const fileSize = file.data.length;
             const ext = path.extname(file.name);
             const fileName = `${nanoid(12)}${ext}`;
-            const url = `${req.protocol}://${req.get("host")}/file/${fileName}`;
+            const url = `${req.protocol}://${req.get("host")}/src/public/file/${fileName}`;
             const uploadPath = `./src/public/file/${fileName}`;
 
             if (fileSize > 3000000)
