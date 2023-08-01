@@ -12,21 +12,23 @@ module.exports = {
   getAllSubmission: async (req, res) => {
     try {
       const submissions = await Submission.findAll();
-  
+
       const forms = await Form.findAll();
-  
+
       let dataSubmission = submissions.map((submission) => ({
         id: submission.id,
         user_id: submission.user_id,
         user_name: submission.user_name,
         form_id: submission.form_id,
         status: submission.status,
-        form_title: forms.find((form) => form.id === submission.form_id)?.title || null,
+        form_title:
+          forms.find((form) => form.id === submission.form_id)?.title || null,
+        createdAt: submission.createdAt,
       }));
-  
+
       return res.status(200).send({
         status: "success",
-        submissionOwner: dataSubmission, 
+        submissionOwner: dataSubmission,
       });
     } catch (error) {
       res.status(500).send({
@@ -44,21 +46,23 @@ module.exports = {
           user_id: req.accountId,
         },
       });
-  
+
       const forms = await Form.findAll();
-  
+
       let dataSubmission = submissions.map((submission) => ({
         id: submission.id,
         user_id: submission.user_id,
         user_name: submission.user_name,
         form_id: submission.form_id,
         status: submission.status,
-        form_title: forms.find((form) => form.id === submission.form_id)?.title || null,
+        form_title:
+          forms.find((form) => form.id === submission.form_id)?.title || null,
+        createdAt: submission.createdAt,
       }));
-  
+
       return res.status(200).send({
         status: "success",
-        submissionOwner: dataSubmission, 
+        submissionOwner: dataSubmission,
       });
     } catch (error) {
       res.status(500).send({
@@ -112,7 +116,7 @@ module.exports = {
         },
       });
 
-      if (submission.status === "Reject") {
+      if (submission.status === "Ditolak" || submission.status === "Selesai") {
         const comment = await Comment.findOne({
           where: {
             submission_id: req.params.id,
@@ -158,7 +162,6 @@ module.exports = {
           id: req.params.id,
         },
       });
-    
 
       const submissionId = `submission-${nanoid(12)}`;
       const name = account.name;
@@ -171,7 +174,7 @@ module.exports = {
         form_id: req.params.id,
         form_title: formTitle,
         status: statusInput,
-      });   
+      });
 
       const questions = await Question.findAll({
         where: {
