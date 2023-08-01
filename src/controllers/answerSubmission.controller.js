@@ -173,7 +173,7 @@ module.exports = {
         new Date().toISOString().slice(5, 7) +
         new Date().toISOString().slice(8, 10);
 
-      const customID = currentDate +"-" + generateCustomID();
+      const customID = currentDate + "-" + generateCustomID();
       const submissionId = `NP-${customID}`;
       const name = account.name;
       const formTitle = form.title;
@@ -197,7 +197,7 @@ module.exports = {
 
       for (const question of questions) {
         let answerInput = req.body[question.id];
-        if (question.type === "file upload" && req.files) {
+        if (question.type === "image-upload" && req.files) {
           const file = req.files[question.id];
           const fileSize = file.data.length;
           const ext = path.extname(file.name);
