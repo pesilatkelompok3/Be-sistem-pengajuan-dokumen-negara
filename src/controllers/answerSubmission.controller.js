@@ -173,7 +173,7 @@ module.exports = {
         new Date().toISOString().slice(5, 7) +
         new Date().toISOString().slice(8, 10);
 
-      const customID = currentDate +"-" + generateCustomID();
+      const customID = currentDate + "-" + generateCustomID();
       const submissionId = `NP-${customID}`;
       const name = account.name;
       const formTitle = form.title;
