@@ -203,7 +203,7 @@ module.exports = {
           const ext = path.extname(file.name);
           const fileName = `${nanoid(12)}${ext}`;
           const url = `${req.protocol}://${req.get("host")}/files/${fileName}`;
-          const uploadPath = `./src/public/file/${fileName}`;
+          const uploadPath = `./src/public/files/${fileName}`;
 
           if (fileSize > 3000000)
             return res

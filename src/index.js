@@ -25,6 +25,7 @@ app.use(
   })
 );
 app.use(FileUpload());
+app.use(express.static("./src/public"));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
