@@ -15,7 +15,7 @@ formRouter.delete("/admin/question/:id", authentication, isAdmin, form.deleteQue
 
 formRouter.get("/forms", authentication, form.getForms);
 formRouter.get("/home", form.getForms);
-formRouter.get("/completeness", form.getCompleteness);
+formRouter.get("/completeness/:id", form.getCompleteness);
 formRouter.get("/form/:id", authentication, form.getFormQuestionById);
 
 module.exports = formRouter;
