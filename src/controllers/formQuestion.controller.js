@@ -43,24 +43,27 @@ module.exports = {
       });
     }
   },
-getCompleteness: async (req, res) => {
-try {
-  const completeness = await Form.findOne({
-    where: {
-      id: req.params.id,
-    },
-  });
-  const data = completeness.completeness;
+  getCompleteness: async (req, res) => {
+    try {
+      const completeness = await Form.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      const data = completeness.completeness;
 
-  res.status(201).send({
-    status: "success",
-    data,
-  });
-
-} catch (error) {
-  
-}
-},
+      res.status(201).send({
+        status: "success",
+        data,
+      });
+    } catch (error) {
+      res.status(500).send({
+        auth: false,
+        message: "Error",
+        errors: error,
+      });
+    }
+  },
   createForm: async (req, res) => {
     try {
       const formId = `form-${nanoid(12)}`;
@@ -76,13 +79,15 @@ try {
 
       const questions = req.body.form.question;
       const inputs = [];
-      for (const question of questions) {
+
+      for (let i = 0; i < questions.length; i++) {
+        const question = questions[i];
         const titleField = question.title_field;
         const type = question.type;
         const required = question.required;
 
         const input = await Question.create({
-          id: `question-${nanoid(12)}`,
+          id: `question-${String(i + 1).padStart(3, "0")}-${nanoid(9)}`,
           form_id: formId,
           title_field: titleField,
           type: type,

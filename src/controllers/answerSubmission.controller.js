@@ -197,7 +197,7 @@ module.exports = {
 
       for (const question of questions) {
         let answerInput = req.body[question.id];
-        if (question.type === "file upload" && req.files) {
+        if (question.type === "image-upload" && req.files) {
           const file = req.files[question.id];
           const fileSize = file.data.length;
           const ext = path.extname(file.name);
@@ -456,7 +456,7 @@ module.exports = {
             if (fileSize > 3000000)
               return res
                 .status(422)
-                .json({ msg: "Image must be less than 3 MB" });
+                .json({ msg: "Ukuran file tidak boleh lebih dari 3 MB" });
 
             const oldFileName = oldAnswer.input.split("/").pop();
             const oldfile = `./src/public/file/${oldFileName}`;

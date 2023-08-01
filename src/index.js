@@ -3,6 +3,8 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const FileUpload = require("express-fileupload");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 const accountRouter = require("./routers/account.router.js");
 const formRouter = require("./routers/formQuestion.router.js");
 const submissionRouter = require("./routers/answerSubmission.router.js");
@@ -38,6 +40,7 @@ app.use((req, res, next) => {
   }
   next();
 });
+
 
 app.use(accountRouter);
 app.use(formRouter);
