@@ -5,6 +5,7 @@ const { Answer } = require("../models");
 const { Submission } = require("../models");
 const { Comment } = require("../models");
 const { nanoid } = require("nanoid");
+const { customAlphabet } = require("nanoid");
 const path = require("path");
 const fs = require("fs");
 
@@ -162,8 +163,18 @@ module.exports = {
           id: req.params.id,
         },
       });
+      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const idLength = 6;
 
-      const submissionId = `submission-${nanoid(12)}`;
+      const generateCustomID = customAlphabet(alphabet, idLength);
+
+      const currentDate =
+        new Date().toISOString().slice(2, 4) +
+        new Date().toISOString().slice(5, 7) +
+        new Date().toISOString().slice(8, 10);
+
+      const customID = currentDate +"-" + generateCustomID();
+      const submissionId = `NP-${customID}`;
       const name = account.name;
       const formTitle = form.title;
       const statusInput = "Diajukan";
@@ -197,7 +208,7 @@ module.exports = {
           if (fileSize > 3000000)
             return res
               .status(422)
-              .json({ msg: "Image must be less than 3 MB" });
+              .json({ msg: "Ukuran file tidak boleh lebih dari 3 MB" });
 
           file.mv(uploadPath, (err) => {
             if (err) {
@@ -209,9 +220,7 @@ module.exports = {
         }
 
         if (question.required === "1" && !answerInput) {
-          return res
-            .status(422)
-            .json({ msg: "Required question is not answered" });
+          return res.status(422).json({ msg: "Mohon isi data dengan lengkap" });
         }
 
         const answer = await Answer.create({
