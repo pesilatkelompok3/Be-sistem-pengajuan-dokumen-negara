@@ -178,14 +178,6 @@ module.exports = {
       const name = account.name;
       const formTitle = form.title;
       const statusInput = "Diajukan";
-      const submission = await Submission.create({
-        id: submissionId,
-        user_id: req.accountId,
-        user_name: name,
-        form_id: req.params.id,
-        form_title: formTitle,
-        status: statusInput,
-      });
 
       const questions = await Question.findAll({
         where: {
@@ -223,6 +215,15 @@ module.exports = {
           return res.status(422).json({ msg: "Mohon isi data dengan lengkap" });
         }
 
+        const submission = await Submission.create({
+          id: submissionId,
+          user_id: req.accountId,
+          user_name: name,
+          form_id: req.params.id,
+          form_title: formTitle,
+          status: statusInput,
+        });
+        
         const answer = await Answer.create({
           id: `answer-${nanoid(12)}`,
           submission_id: submissionId,
