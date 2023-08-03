@@ -184,6 +184,22 @@ module.exports = {
           form_id: form.id,
         },
       });
+      for (const question of questions){
+        let answerInput = req.body[question.id];
+        let answerfile = req.files[question.id];
+        
+        if (question.required === "1" && !answerInput && !answerfile) {
+          return res.status(422).json({ msg: "Mohon isi data dengan lengkap" });
+        }
+      }
+      const submission = await Submission.create({
+        id: submissionId,
+        user_id: req.accountId,
+        user_name: name,
+        form_id: req.params.id,
+        form_title: formTitle,
+        status: statusInput,
+      });
 
       const answers = [];
 
@@ -215,15 +231,6 @@ module.exports = {
           return res.status(422).json({ msg: "Mohon isi data dengan lengkap" });
         }
 
-        const submission = await Submission.create({
-          id: submissionId,
-          user_id: req.accountId,
-          user_name: name,
-          form_id: req.params.id,
-          form_title: formTitle,
-          status: statusInput,
-        });
-        
         const answer = await Answer.create({
           id: `answer-${nanoid(12)}`,
           submission_id: submissionId,
@@ -233,7 +240,6 @@ module.exports = {
 
         answers.push(answer);
       }
-
       res.status(200).send({
         auth: true,
         message: "Submission has created",
@@ -451,7 +457,9 @@ module.exports = {
             const fileSize = file.data.length;
             const ext = path.extname(file.name);
             const fileName = `${nanoid(12)}${ext}`;
-            const url = `${req.protocol}://${req.get("host")}/src/public/file/${fileName}`;
+            const url = `${req.protocol}://${req.get(
+              "host"
+            )}/src/public/file/${fileName}`;
             const uploadPath = `./src/public/file/${fileName}`;
 
             if (fileSize > 3000000)
