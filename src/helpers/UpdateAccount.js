@@ -1,6 +1,17 @@
 const { Account } = require("../models/index.js");
 
-const updateAccount = async (name, email, phone_number, birth_date, gender, address, hashPassword, res, account) => {
+const updateAccount = async (
+  name,
+  email,
+  phone_number,
+  birth_date,
+  gender,
+  address,
+  hashPassword,
+  res,
+  account,
+  Url
+) => {
   try {
     await Account.update(
       {
@@ -11,6 +22,7 @@ const updateAccount = async (name, email, phone_number, birth_date, gender, addr
         gender: gender,
         password: hashPassword,
         address: address,
+        profile_image: Url,
       },
       {
         where: {
