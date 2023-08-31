@@ -2,14 +2,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Roles', {
+    await queryInterface.createTable('Comments', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
-      role: {
+      submission_id: {
+        type: Sequelize.STRING,
+        references: {
+          model: "Submissions",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+      },
+      comment_input: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -23,6 +30,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Roles');
+    await queryInterface.dropTable('Comments');
   }
 };

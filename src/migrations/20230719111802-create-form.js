@@ -5,15 +5,17 @@ module.exports = {
     await queryInterface.createTable('Forms', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       title: {
         type: Sequelize.STRING
       },
       description: {
         type: Sequelize.STRING
+      },
+      completeness: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,

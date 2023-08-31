@@ -1,0 +1,528 @@
+{
+	"info": {
+		"_postman_id": "fdd68a99-3660-41f6-8081-6d720e414aa3",
+		"name": "Final Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24097162"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Refresh Token",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/token",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nip",
+											"value": "47484564574352",
+											"description": "admin",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "nip",
+											"value": "123457844754",
+											"description": "super admin",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "bruhh@gmail.com",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": "12345678",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "cookyndi",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "name",
+											"value": "iind",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "012345676890",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "ndii@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "dfgdfg",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "confPassword",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "kota",
+											"value": "bandung",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/user/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"user",
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4ta1daSkI4aURJMmdRIiwiaWF0IjoxNjkwMjU5NjE0LCJleHAiOjE2OTAyNzA0MTR9.nP4G9wC3ULNcbel-qnlHmLN-X7_IKLfHAqrmQeIW8lc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nip",
+											"value": "027350257",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "risu",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "012345676890",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "email",
+											"value": "risu@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "confPassword",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "admin",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/admin/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"admin",
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMDc4NDkwLCJleHAiOjE2OTAwNzg3OTB9.hngZjWjMNVO0RWMGpBSdR2vzru4CmfbJMMIHzch9nRE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/logout",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "account management",
+					"item": [
+						{
+							"name": "Get All Account",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4ta1daSkI4aURJMmdRIiwiaWF0IjoxNjkwMjYyNzQxLCJleHAiOjE2OTAyNzM1NDF9.2YVRwdGu1E2FUfBXF-KDbMd3wvCHycuw0L4Xvhn8LgM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/account",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Account By Id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4ta1daSkI4aURJMmdRIiwiaWF0IjoxNjkwMjU5OTUyLCJleHAiOjE2OTAyNzA3NTJ9.uCFnrvIIxxmGZrIq_z8T7K3s2PYxkgtLFf0iMqU7Pck",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "http://localhost:5000/account/user-qof0JzG8ODNq",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"account",
+										"user-qof0JzG8ODNq"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Account Detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4ta1daSkI4aURJMmdRIiwiaWF0IjoxNjkwMjU5OTUyLCJleHAiOjE2OTAyNzA3NTJ9.uCFnrvIIxxmGZrIq_z8T7K3s2PYxkgtLFf0iMqU7Pck",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Account By Role",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMTkzNjI3LCJleHAiOjE2OTAxOTM5Mjd9.fDINsg5XG4Io4g7bREhLFFXOs4aNgLChioU564sPv2k",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "role",
+											"value": "user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Account",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlN1cGVyQWRtaW4tX25VNGtaRTB2b3puIiwiaWF0IjoxNjkwMTY4NDA0LCJleHAiOjE2OTAxNjg3MDR9.ixv52mP01kd_ooIMhbsyeHH2TNugqZnKI3BXuyZYdfI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Risu",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "0812345678",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "email",
+											"value": "test123@gmail.com",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "birth_date",
+											"value": "28-10-2000",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "gender",
+											"value": "male",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "address",
+											"value": "jln. loli no 727 ",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "confPassword",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "SuperAdmin-_nU4kZE0vozn",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/account",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Account",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluLTZxZVZKaHlNYzZSNCIsImlhdCI6MTY4OTk1MDc1NCwiZXhwIjoxNjg5OTUxMDU0fQ.qkTq0UnWveFkntr1qqOwDcVMjv5nfoVb6QNYzH2ACQA",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "access_token",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "user-2eiZpFFqyYPY",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/account",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"account"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

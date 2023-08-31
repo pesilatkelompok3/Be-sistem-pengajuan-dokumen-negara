@@ -4,18 +4,23 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Submission extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    
     static associate(models) {
-      // define association here
+      Submission.belongsTo(models.Account, { foreignKey: 'user_id' })
+      Submission.hasMany(models.Answer, { foreignKey: "submission_id" });
+      Submission.hasMany(models.Comment, { foreignKey: "submission_id" });
     }
   }
-  SVGAnimateTransformElementubmission.init(
+  Submission.init(
     {
-      user_id: DataTypes.INTEGER,
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.STRING,
+      },
+      user_id: DataTypes.STRING,
+      user_name: DataTypes.STRING,
+      form_id: DataTypes.STRING,
       status: DataTypes.STRING,
     },
     {
