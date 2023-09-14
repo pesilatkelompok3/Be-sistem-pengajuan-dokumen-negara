@@ -6,6 +6,9 @@ const path = require("path");
 const fs = require("fs");
 
 module.exports = {
+  wellcome: async (req, res) => {
+    res.status(200).json("Wellcome To SPDN API!");
+  },
   getAllAccount: async (req, res) => {
     if (req.role === "SuperAdmin") {
       try {

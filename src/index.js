@@ -42,6 +42,9 @@ app.use((req, res, next) => {
 
 app.use(express.json({ limit: "10mb" }));
 
+// app.use("/", (req, res) => {
+//   res.status(200).json("Wellcome To SPDN");
+// });
 
 app.use(accountRouter);
 app.use(formRouter);

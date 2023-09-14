@@ -4,6 +4,8 @@ const authAccount = require("../controllers/authAccount.controller.js");
 const accountManagement = require("../controllers/accountManagement.controller.js");
 const accountRouter = express.Router();
 
+accountRouter.get("/", accountManagement.wellcome);
+
 accountRouter.get("/token", authAccount.refreshToken);
 accountRouter.post("/login", authAccount.login);
 accountRouter.post("/user/registration", authAccount.userRegister);
