@@ -9,12 +9,12 @@ const submissionRouter = require("./routers/answerSubmission.router.js");
 dotenv.config();
 
 const app = express();
-app.use(
-  cors({
-    credentials: true,
-    origin: process.env.CLIENT_URL,
-  })
-);
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: process.env.CLIENT_URL,
+//   })
+// );
 app.use(cookieParser());
 const port = 5000;
 

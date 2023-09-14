@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "db_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "postgres",
+    "password": "6kRsO2fWYMU7w06R",
+    "database": "postgres",
+    "host": "db.nljxswglrroesytkpxwx.supabase.co",
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",
