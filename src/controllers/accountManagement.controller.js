@@ -2,6 +2,8 @@ const argon2 = require("argon2");
 const { Op } = require("sequelize");
 const { Account } = require("../models/index.js");
 const { updateAccount } = require("../helpers/UpdateAccount.js");
+const path = require("path");
+const fs = require("fs");
 
 module.exports = {
   getAllAccount: async (req, res) => {
@@ -95,7 +97,18 @@ module.exports = {
   getDetailAccount: async (req, res) => {
     try {
       const response = await Account.findOne({
-        attributes: ["id", "nip", "name", "phone_number", "email", "birth_date", "role", "gender", "address"],
+        attributes: [
+          "id",
+          "nip",
+          "name",
+          "phone_number",
+          "email",
+          "birth_date",
+          "role",
+          "gender",
+          "address",
+          "profile_image",
+        ],
         where: {
           id: req.accountId,
         },
@@ -171,25 +184,54 @@ module.exports = {
         });
       hashPassword = await argon2.hash(password);
     }
+    let fileName = "";
+    let Url = "";
+    if (req.files === null) {
+      fileName = account.profile_image;
+    } else {
+      const file = req.files.file;
+      const fileSize = file.data.length;
+      const ext = path.extname(file.name);
+      fileName = file.md5 + ext;
+      Url = `${req.protocol}://${req.get("host")}/files/${fileName}`;
+
+      const allowedType = [".png", ".jpg", ".jpeg", ".webp"];
+      if (!allowedType.includes(ext.toLowerCase()))
+        return res.status(422).json({
+          msg: "Gambar Yang Anda Masukan Tidak Valid, Mohon Untuk Menggunakan Gambar Dengan Format (png, jpg, jpeg, webp)",
+          type: "format",
+        });
+      if (fileSize > 5000000) return res.status(422).json({ msg: "Gambar Harus Dibawah 5mb", type: "size" });
+      if (account.profile_image !== null) {
+        const url = account.profile_image;
+        const regex = /^http:\/\/localhost:5000\/files\//;
+        const result = url.replace(regex, "");
+        const filePath = `./src/public/files/${result}`;
+        fs.unlinkSync(filePath);
+      }
+      file.mv(`./src/public/files/${fileName}`, (err) => {
+        if (err) return res.status(500).json({ msg: err.message });
+      });
+    }
 
     if (account.role === "SuperAdmin") {
       if (req.role === "admin" || req.role === "user") {
         res.status(403).json({ msg: "Akses Ditolak" });
       } else {
-        updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
+        updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account, Url);
       }
     } else if (account.role === "admin") {
       if (req.role === "admin" || req.role === "user") {
         if (req.accountId === account.id) {
-          updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
+          updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account, Url);
         } else {
           res.status(403).json({ msg: "Akses Ditolak" });
         }
       } else {
-        updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
+        updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account, Url);
       }
     } else {
-      updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account);
+      updateAccount(name, email, phone_number, birth_date, gender, address, hashPassword, res, account, Url);
     }
   },
 

@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       address: DataTypes.STRING,
       role: DataTypes.STRING,
       refresh_token: DataTypes.STRING,
+      profile_image: DataTypes.STRING,
     },
     {
       sequelize,
